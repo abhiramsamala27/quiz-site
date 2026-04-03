@@ -21,7 +21,8 @@ const QuizSession = ({ user }) => {
 
     const fetchQuestions = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/quiz/questions');
+        const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+        const res = await axios.get(`${baseURL}/api/quiz/questions`);
         setQuestions(res.data);
         setLoading(false);
       } catch (err) {
@@ -82,7 +83,8 @@ const QuizSession = ({ user }) => {
     const timeTakenStr = formatTimeToken(timeUsed);
 
     try {
-      const res = await axios.post('http://localhost:5000/api/quiz/submit', {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.post(`${baseURL}/api/quiz/submit`, {
         name: user.name,
         email: user.email,
         answers: answers,

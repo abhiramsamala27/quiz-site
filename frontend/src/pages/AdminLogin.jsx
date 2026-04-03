@@ -17,7 +17,8 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const res = await axios.post('http://localhost:5000/api/admin/login', { email, password });
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.post(`${baseURL}/api/admin/login`, { email, password });
       localStorage.setItem('quiz_admin_token', res.data.token);
       navigate('/admin/dashboard');
     } catch (err) {

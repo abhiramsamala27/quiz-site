@@ -103,7 +103,8 @@ const ResultsView = ({ token }) => {
   const fetchResults = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/admin/results?page=${page}&limit=10&search=${search}`, {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.get(`${baseURL}/api/admin/results?page=${page}&limit=10&search=${search}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setResults(res.data.results);
@@ -285,7 +286,8 @@ const QuestionsView = ({ token }) => {
   const fetchQuestions = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/admin/questions?page=${page}&limit=10`, {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.get(`${baseURL}/api/admin/questions?page=${page}&limit=10`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setQuestions(res.data.questions);
@@ -328,13 +330,14 @@ const QuestionsView = ({ token }) => {
     if (!formConfig.options.includes(formConfig.correctAnswer)) return setErrorMsg('Correct answer must match one of the options exactly.');
 
     try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       if (editingId) {
-        await axios.put(`http://localhost:5000/api/admin/questions/${editingId}`, formConfig, {
+        await axios.put(`${baseURL}/api/admin/questions/${editingId}`, formConfig, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccessMsg('Question updated successfully!');
       } else {
-        await axios.post('http://localhost:5000/api/admin/questions', formConfig, {
+        await axios.post(`${baseURL}/api/admin/questions`, formConfig, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setSuccessMsg('Question added successfully!');
@@ -352,7 +355,8 @@ const QuestionsView = ({ token }) => {
     setErrorMsg('');
     setSuccessMsg('');
     try {
-      const res = await axios.delete(`http://localhost:5000/api/admin/questions/${id}`, {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.delete(`${baseURL}/api/admin/questions/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSuccessMsg(res.data.message || 'Question deleted successfully!');
