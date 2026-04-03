@@ -35,7 +35,7 @@ const Home = ({ onStart }) => {
           </div>
 
           <h1 className="text-2xl md:text-4xl font-black mb-8 tracking-tight text-white">
-            Start Quiz
+            Mock Assessment
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-6 text-left">
@@ -72,7 +72,7 @@ const Home = ({ onStart }) => {
             {error && <p className="text-red-400 text-sm font-medium animate-pulse text-center">{error}</p>}
 
             <button type="submit" className="w-full gradient-btn rounded-2xl py-5 text-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/25">
-              Start Quiz 🚀
+              Begin Now 🚀
             </button>
           </form>
 

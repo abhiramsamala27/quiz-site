@@ -131,7 +131,7 @@ const QuizSession = ({ user }) => {
         </div>
 
         <span className="font-black text-slate-400/80 text-sm md:text-base tracking-widest pointer-events-auto drop-shadow-xl uppercase">
-          Attempting: <span className="text-white">{user.name}</span>
+          Assessment: <span className="text-white">{user.name}</span>
         </span>
         
         <div className={`font-mono text-xl md:text-2xl font-black pointer-events-auto drop-shadow-xl tracking-wider ${timerColor}`}>
@@ -196,10 +196,10 @@ const QuizSession = ({ user }) => {
           className="gradient-btn px-12 py-6 rounded-[2.5rem] text-xl font-black flex items-center gap-4 shadow-2xl hover:scale-105 transition-all w-full md:w-auto"
         >
           {submitting ? <Loader2 size={28} className="animate-spin" /> : <Send size={28} />}
-          SUBMIT EXAM
+          SUBMIT ASSESSMENT
         </button>
         <p className="text-slate-500 mt-6 font-medium text-sm">
-          Please review all {questions.length} questions before final submission.
+          Please review all {questions.length} assessment items before final submission.
         </p>
       </div>
     </div>

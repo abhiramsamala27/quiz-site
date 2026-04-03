@@ -9,7 +9,7 @@ const Logo = () => {
           <Zap size={22} className="text-white fill-white" />
         </div>
         <span className="text-2xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60 group-hover:to-white transition-all duration-300 drop-shadow-sm">
-          QuizApp <span className="text-indigo-400">⚡</span>
+          PrepMock <span className="text-indigo-400">⚡</span>
         </span>
       </Link>
     </div>

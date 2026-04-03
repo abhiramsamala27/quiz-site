@@ -56,13 +56,13 @@ async function sendResultEmail(name, email, score, total) {
   });
 
   const mailOptions = {
-    from: `"QuizApp ⚡" <${process.env.EMAIL_USER}>`,
+    from: `"PrepMock ⚡" <${process.env.EMAIL_USER}>`,
     to: email,
-    subject: 'Your Quiz Result - QuizApp ⚡',
+    subject: 'Your Mock Assessment Performance - PrepMock ⚡',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
         <h2 style="color: #6366f1;">Hello ${name},</h2>
-        <p>Congratulations on completing the quiz! Here are your results:</p>
+        <p>Congratulations on completing your mock assessment! Here is your performance breakdown:</p>
         <div style="background: #f4f7ff; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0;">
           <h1 style="font-size: 3rem; margin: 0; color: #4f46e5;">${score} / ${total}</h1>
           <p style="color: #666;">Total Score</p>

@@ -46,8 +46,8 @@ const ResultPage = ({ user }) => {
           transition={{ delay: 0.3 }}
           className="mt-6 md:mt-8"
         >
-          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight">Your Quiz Result</h1>
-          <p className="text-slate-400 text-base md:text-xl font-medium">Hello, <span className="text-white font-bold">{user?.name}</span>. Here is your scorecard.</p>
+          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight">Assessment Result</h1>
+          <p className="text-slate-400 text-base md:text-xl font-medium">Hello, <span className="text-white font-bold">{user?.name}</span>. Here is your mock performance scorecard.</p>
         </motion.div>
 
         <div className="my-8 md:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">

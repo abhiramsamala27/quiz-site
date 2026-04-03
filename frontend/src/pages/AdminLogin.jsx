@@ -42,17 +42,17 @@ const AdminLogin = () => {
             <Lock size={32} className="text-white fill-white/10" />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-black text-center mb-2 tracking-tight">Admin Portal</h1>
-          <p className="text-slate-500 text-center mb-10 font-medium">Verify your credentials to manage the platform.</p>
+          <h1 className="text-3xl md:text-4xl font-black text-center mb-2 tracking-tight">Interviewer Portal</h1>
+          <p className="text-slate-500 text-center mb-10 font-medium">Verify your credentials to manage assessments.</p>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-400 ml-1">Admin Email</label>
+              <label className="text-sm font-semibold text-slate-400 ml-1">Email Address</label>
               <div className="relative">
                 <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
                 <input 
                   type="email" 
-                  placeholder="admin@quizapp.com"
+                  placeholder="interviewer@prepmock.com"
                   className="w-full glass-input rounded-2xl py-4 pl-14 pr-6 outline-none text-white transition-all text-lg"
                   value={email}
                   onChange={e => setEmail(e.target.value)}

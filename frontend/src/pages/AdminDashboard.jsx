@@ -31,9 +31,9 @@ const AdminDashboard = ({ onLogout }) => {
           <div>
             <div className="flex items-center gap-3 text-indigo-400 font-bold mb-2">
               <Database size={20} />
-              <span>Control Center</span>
+              <span>Assessment Portal</span>
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tight text-left">Admin</h1>
+            <h1 className="text-3xl font-black text-white tracking-tight text-left">Hiring</h1>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -43,8 +43,8 @@ const AdminDashboard = ({ onLogout }) => {
                 activeTab === 'results' ? 'bg-indigo-500 text-white shadow-lg shadow-indigo-500/25' : 'text-slate-400 hover:bg-white/5 hover:text-white glass-card border-transparent'
               }`}
             >
-              <LayoutDashboard size={20} />
-              Results Overview
+              <Users size={20} />
+              Candidate Records
             </button>
 
             <div className="space-y-1">
