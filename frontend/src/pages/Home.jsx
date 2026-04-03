@@ -24,7 +24,7 @@ const Home = ({ onStart }) => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-10 md:p-14 rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
+        className="glass-card p-6 md:p-14 rounded-[2rem] md:rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -34,7 +34,7 @@ const Home = ({ onStart }) => {
             <Zap size={32} className="text-indigo-400 fill-indigo-400/20" />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-black mb-8 tracking-tight text-white">
+          <h1 className="text-2xl md:text-4xl font-black mb-8 tracking-tight text-white">
             Start Quiz
           </h1>
 

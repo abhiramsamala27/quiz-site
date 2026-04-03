@@ -147,13 +147,13 @@ const QuizSession = ({ user }) => {
             viewport={{ once: true, margin: "-50px" }}
             transition={{ duration: 0.4 }}
             key={q._id}
-            className="glass-card p-8 md:p-10 rounded-[2.5rem] shadow-xl border-white/10 relative overflow-hidden"
+            className="glass-card p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-xl border-white/10 relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 p-6 text-indigo-500/5 select-none pointer-events-none">
               <span className="text-[8rem] font-black leading-none">{(qIndex + 1).toString().padStart(2, '0')}</span>
             </div>
 
-            <h2 className="text-xl md:text-2xl font-bold mb-8 leading-snug relative z-10">
+            <h2 className="text-lg md:text-2xl font-bold mb-8 leading-snug relative z-10">
               <span className="text-indigo-400 mr-2">{qIndex + 1}.</span> {q.question}
             </h2>
 

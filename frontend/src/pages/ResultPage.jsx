@@ -34,9 +34,9 @@ const ResultPage = ({ user }) => {
         initial={{ scale: 0.8, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ type: "spring", damping: 12 }}
-        className="glass-card p-12 md:p-16 rounded-[4rem] text-center max-w-3xl w-full border-white/20 relative shadow-2xl relative"
+        className="glass-card p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] text-center max-w-3xl w-full border-white/20 relative shadow-2xl"
       >
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl shadow-2xl shadow-indigo-500/40">
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl shadow-2xl shadow-indigo-500/40 scale-75 md:scale-100">
           <Trophy size={48} className="text-white fill-white/10" />
         </div>
 
@@ -44,13 +44,13 @@ const ResultPage = ({ user }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-8"
+          className="mt-6 md:mt-8"
         >
-          <h1 className="text-4xl md:text-6xl font-black mb-4 tracking-tight">Your Quiz Result</h1>
-          <p className="text-slate-400 text-lg md:text-xl font-medium">Hello, <span className="text-white font-bold">{user?.name}</span>. Here is your scorecard.</p>
+          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight">Your Quiz Result</h1>
+          <p className="text-slate-400 text-base md:text-xl font-medium">Hello, <span className="text-white font-bold">{user?.name}</span>. Here is your scorecard.</p>
         </motion.div>
 
-        <div className="my-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        <div className="my-8 md:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div className="relative">
              <svg className="w-full h-auto transform -rotate-90" viewBox="0 0 100 100">
                <circle 

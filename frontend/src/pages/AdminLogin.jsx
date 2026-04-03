@@ -32,7 +32,7 @@ const AdminLogin = () => {
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-10 md:p-14 rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
+        className="glass-card p-6 md:p-14 rounded-[2rem] md:rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
