@@ -4,9 +4,9 @@ const nodemailer = require('nodemailer');
 
 exports.getQuestions = async (req, res) => {
   try {
-    const questions = await Question.aggregate([{ $sample: { size: 5 } }]);
-    if (questions.length < 5) {
-      return res.status(400).json({ message: 'Not enough questions in the database (min 5 required).' });
+    const questions = await Question.aggregate([{ $sample: { size: 20 } }]);
+    if (questions.length < 20) {
+      return res.status(400).json({ message: 'Not enough questions in the database (min 20 required).' });
     }
     // Remove correct answers before sending to client for security
     const sanitizedQuestions = questions.map(q => ({
