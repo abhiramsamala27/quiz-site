@@ -23,17 +23,17 @@ const AdminDashboard = ({ onLogout }) => {
   }, [token, navigate]);
 
   return (
-    <div className="py-10">
+    <div className="pb-24 lg:py-10">
       <div className="flex flex-col lg:flex-row gap-8">
         
-        {/* Sidebar */}
-        <div className="lg:w-72 shrink-0 space-y-6">
+        {/* Desktop Sidebar (Hidden on Mobile) */}
+        <div className="hidden lg:block lg:w-72 shrink-0 space-y-6">
           <div>
             <div className="flex items-center gap-3 text-indigo-400 font-bold mb-2">
               <Database size={20} />
               <span>Control Center</span>
             </div>
-            <h1 className="text-3xl font-black text-white tracking-tight">Admin</h1>
+            <h1 className="text-3xl font-black text-white tracking-tight text-left">Admin</h1>
           </div>
 
           <div className="flex flex-col gap-2">
@@ -106,6 +106,30 @@ const AdminDashboard = ({ onLogout }) => {
           >
             <LogOut size={20} className="text-slate-500 group-hover:text-red-400 transition-colors" />
             <span className="text-slate-500 group-hover:text-red-400 transition-colors">Sign Out</span>
+          </button>
+        </div>
+
+        {/* Mobile Bottom Navigation Bar (Hidden on Desktop) */}
+        <div className="fixed bottom-0 left-0 w-full lg:hidden z-50 p-4 pb-6 bg-[#0f172a]/80 backdrop-blur-3xl border-t border-white/5 flex items-center justify-around">
+          <button onClick={() => setActiveTab('results')} className={`flex flex-col items-center gap-1 ${activeTab === 'results' ? 'text-indigo-400 font-bold scale-110' : 'text-slate-500'}`}>
+            <LayoutDashboard size={24} />
+            <span className="text-[10px]">Results</span>
+          </button>
+          <button onClick={() => setActiveTab('questions')} className={`flex flex-col items-center gap-1 ${activeTab === 'questions' ? 'text-purple-400 font-bold scale-110' : 'text-slate-500'}`}>
+            <Database size={24} />
+            <span className="text-[10px]">Manage</span>
+          </button>
+          <button onClick={() => setActiveTab('bulk')} className={`flex flex-col items-center gap-1 ${activeTab === 'bulk' ? 'text-purple-400 font-bold scale-110' : 'text-slate-500'}`}>
+            <UploadCloud size={24} />
+            <span className="text-[10px]">Import</span>
+          </button>
+          <button onClick={() => setActiveTab('export')} className={`flex flex-col items-center gap-1 ${activeTab === 'export' ? 'text-purple-400 font-bold scale-110' : 'text-slate-500'}`}>
+            <DownloadCloud size={24} />
+            <span className="text-[10px]">Export</span>
+          </button>
+          <button onClick={onLogout} className="flex flex-col items-center gap-1 text-red-500/80">
+            <LogOut size={24} />
+            <span className="text-[10px]">Exit</span>
           </button>
         </div>
 
@@ -238,8 +262,8 @@ const ResultsView = ({ token }) => {
           </div>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
+        {/* Table - Desktop only */}
+        <div className="hidden md:block overflow-x-auto">
           {loading ? (
             <div className="flex flex-col items-center justify-center p-20">
                <Loader2 size={48} className="animate-spin text-indigo-500 mb-4" />
@@ -258,7 +282,7 @@ const ResultsView = ({ token }) => {
                   <th className="p-6">Email</th>
                   <th className="p-6">Score</th>
                   <th className="p-6 flex items-center gap-2"><Clock size={16} /> Time Taken</th>
-                  <th className="p-6">Submission Date</th>
+                  <th className="p-6">Date</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-semibold text-slate-300">
@@ -278,12 +302,37 @@ const ResultsView = ({ token }) => {
                       </div>
                     </td>
                     <td className="p-6">{res.timeTaken}</td>
-                    <td className="p-6 text-slate-400">{formatDate(res.createdAt || res.submittedAt)}</td>
+                    <td className="p-6 text-slate-400">{formatDate(res.createdAt)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
+        </div>
+
+        {/* Card View - Mobile only */}
+        <div className="md:hidden space-y-4 p-4">
+          {loading ? (
+             <div className="flex justify-center p-10"><Loader2 className="animate-spin text-indigo-500" /></div>
+          ) : results.map((res) => (
+            <div key={res._id} className="glass-card p-5 rounded-2xl border-white/5 space-y-3">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4 className="font-bold text-white tracking-tight">{res.name}</h4>
+                  <p className="text-xs text-slate-500">{res.email}</p>
+                </div>
+                <span className={`px-3 py-1 rounded-full text-[10px] font-black ${
+                  res.score / res.totalQuestions >= 0.8 ? 'bg-green-500/20 text-green-400' : 'bg-indigo-500/20 text-indigo-400'
+                }`}>
+                  {res.score}/{res.totalQuestions}
+                </span>
+              </div>
+              <div className="flex justify-between items-center pt-2 border-t border-white/5 text-[10px] font-bold text-slate-500">
+                 <span className="flex items-center gap-1"><Clock size={10} /> {res.timeTaken}</span>
+                 <span>{formatDate(res.createdAt)}</span>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Pagination */}
@@ -539,8 +588,9 @@ const QuestionsView = ({ token }) => {
       </AnimatePresence>
 
       {/* Questions List */}
-      <div className="glass-card rounded-[2.5rem] border-white/10 overflow-hidden">
-        <div className="overflow-x-auto">
+      <div className="glass-card rounded-[2rem] md:rounded-[2.5rem] border-white/10 overflow-hidden">
+        {/* Desktop Table View */}
+        <div className="hidden md:block overflow-x-auto">
           {loading ? (
             <div className="flex flex-col items-center justify-center p-20">
                <Loader2 size={48} className="animate-spin text-purple-500 mb-4" />
@@ -592,6 +642,24 @@ const QuestionsView = ({ token }) => {
               </tbody>
             </table>
           )}
+        </div>
+
+        {/* Mobile Card View */}
+        <div className="md:hidden space-y-4 p-4">
+          {loading ? (
+             <div className="flex justify-center p-10"><Loader2 className="animate-spin text-purple-500" /></div>
+          ) : questions.map((q) => (
+            <div key={q._id} className="glass-card p-5 rounded-2xl border-white/5 space-y-4">
+              <h4 className="font-bold text-white text-sm line-clamp-3 leading-relaxed">{q.question}</h4>
+              <div className="flex justify-between items-center pt-3 border-t border-white/5">
+                <span className="text-[10px] text-green-400 font-black uppercase tracking-widest">Ans: {q.correctAnswer}</span>
+                <div className="flex gap-2">
+                   <button onClick={() => openFormForEdit(q)} className="p-2.5 bg-white/5 text-purple-400 rounded-lg"><Edit3 size={16} /></button>
+                   <button onClick={() => deleteQuestion(q._id)} className="p-2.5 bg-white/5 text-red-400 rounded-lg"><Trash2 size={16} /></button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
         {/* Pagination */}
