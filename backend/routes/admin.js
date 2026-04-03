@@ -10,5 +10,7 @@ router.put('/questions/:id', auth, adminController.updateQuestion);
 router.delete('/questions/:id', auth, adminController.deleteQuestion);
 
 router.get('/results', auth, adminController.getResults);
+router.get('/results/all', auth, adminController.getResultsAll);
+router.post('/questions/bulk', auth, adminController.importQuestionsBulk);
 
 module.exports = router;

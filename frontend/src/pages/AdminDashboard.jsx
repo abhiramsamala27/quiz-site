@@ -4,13 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   LogOut, Search, Users, Trophy, Target, Clock,
   ChevronLeft, ChevronRight, Loader2, Database,
-  LayoutDashboard, BookOpen, Plus, Trash2, Edit3, X, AlertTriangle, Save
+  LayoutDashboard, BookOpen, Plus, Trash2, Edit3, X, AlertTriangle, Save,
+  ChevronDown, UploadCloud, DownloadCloud, FileText
 } from 'lucide-react';
 import axios from 'axios';
 
 // --- MAIN DASHBOARD COMPONENT ---
 const AdminDashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('results');
+  const [dropdownOpen, setDropdownOpen] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem('quiz_admin_token');
 
@@ -25,7 +27,7 @@ const AdminDashboard = ({ onLogout }) => {
       <div className="flex flex-col lg:flex-row gap-8">
         
         {/* Sidebar */}
-        <div className="lg:w-64 shrink-0 space-y-6">
+        <div className="lg:w-72 shrink-0 space-y-6">
           <div>
             <div className="flex items-center gap-3 text-indigo-400 font-bold mb-2">
               <Database size={20} />
@@ -42,17 +44,60 @@ const AdminDashboard = ({ onLogout }) => {
               }`}
             >
               <LayoutDashboard size={20} />
-              Results
+              Results Overview
             </button>
-            <button 
-              onClick={() => setActiveTab('questions')}
-              className={`flex items-center justify-start gap-3 p-4 rounded-2xl font-bold transition-all ${
-                activeTab === 'questions' ? 'bg-purple-500 text-white shadow-lg shadow-purple-500/25' : 'text-slate-400 hover:bg-white/5 hover:text-white glass-card border-transparent'
-              }`}
-            >
-              <BookOpen size={20} />
-              Manage Questions
-            </button>
+
+            <div className="space-y-1">
+              <button 
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className={`w-full flex items-center justify-between p-4 rounded-2xl font-bold transition-all text-slate-400 hover:text-white glass-card border-transparent mb-1`}
+              >
+                <div className="flex items-center gap-3">
+                  <BookOpen size={20} className="text-purple-400" />
+                  <span>Master Tools</span>
+                </div>
+                <ChevronDown size={18} className={`transition-transform duration-300 ${dropdownOpen ? 'rotate-180' : ''}`} />
+              </button>
+
+              <AnimatePresence>
+                {dropdownOpen && (
+                  <motion.div 
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    className="overflow-hidden space-y-1 pl-4"
+                  >
+                    <button 
+                      onClick={() => setActiveTab('questions')}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl font-bold transition-all text-sm ${
+                        activeTab === 'questions' ? 'bg-purple-500 text-white' : 'text-slate-500 hover:bg-white/5'
+                      }`}
+                    >
+                      <Database size={16} />
+                      Manage Bank
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('bulk')}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl font-bold transition-all text-sm ${
+                        activeTab === 'bulk' ? 'bg-purple-500 text-white' : 'text-slate-500 hover:bg-white/5'
+                      }`}
+                    >
+                      <UploadCloud size={16} />
+                      Bulk Import
+                    </button>
+                    <button 
+                      onClick={() => setActiveTab('export')}
+                      className={`w-full flex items-center gap-3 p-3 rounded-xl font-bold transition-all text-sm ${
+                        activeTab === 'export' ? 'bg-purple-500 text-white' : 'text-slate-500 hover:bg-white/5'
+                      }`}
+                    >
+                      <DownloadCloud size={16} />
+                      Export Tools
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           <button 
@@ -71,9 +116,17 @@ const AdminDashboard = ({ onLogout }) => {
               <motion.div key="results" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <ResultsView token={token} />
               </motion.div>
-            ) : (
+            ) : activeTab === 'questions' ? (
               <motion.div key="questions" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                 <QuestionsView token={token} />
+              </motion.div>
+            ) : activeTab === 'bulk' ? (
+              <motion.div key="bulk" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                <BulkImportView token={token} />
+              </motion.div>
+            ) : (
+              <motion.div key="export" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
+                <ExportView token={token} />
               </motion.div>
             )}
           </AnimatePresence>
@@ -569,4 +622,172 @@ const QuestionsView = ({ token }) => {
   );
 };
 
+// --- BULK IMPORT VIEW ---
+const BulkImportView = ({ token }) => {
+  const [fileData, setFileData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  const downloadTemplate = () => {
+    const headers = "question,option1,option2,option3,option4,correctAnswer\n";
+    const example = "What is 2+2?,3,4,5,6,4\n";
+    const blob = new Blob([headers + example], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'quiz_template.csv';
+    a.click();
+  };
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const text = event.target.result;
+      const lines = text.split('\n').filter(line => line.trim() !== '');
+      const headers = lines[0].split(',');
+      
+      const parsed = lines.slice(1).map(line => {
+        const values = line.split(',');
+        return {
+          question: values[0],
+          options: [values[1], values[2], values[3], values[4]],
+          correctAnswer: values[5]?.trim()
+        };
+      });
+
+      setFileData(parsed);
+      setError('');
+    };
+    reader.readAsText(file);
+  };
+
+  const handleUpload = async () => {
+    if (!fileData || fileData.length === 0) return setError('Please select a valid CSV file first.');
+    setLoading(true);
+    try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      await axios.post(`${baseURL}/api/admin/questions/bulk`, { questions: fileData }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSuccess(`${fileData.length} questions imported successfully!`);
+      setFileData(null);
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to import questions.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="glass-card p-10 rounded-[2.5rem] border-white/10 text-center max-w-2xl mx-auto">
+        <UploadCloud size={64} className="text-purple-400 mx-auto mb-6" />
+        <h2 className="text-3xl font-black text-white mb-2">Bulk Import</h2>
+        <p className="text-slate-400 mb-8">Upload a CSV file to add multiple questions instantly.</p>
+
+        <div className="flex flex-col items-center gap-4">
+          <input 
+            type="file" 
+            accept=".csv" 
+            onChange={handleFile}
+            className="block w-full text-sm text-slate-500 file:mr-4 file:py-3 file:px-6 file:rounded-xl file:border-0 file:text-sm file:font-black file:bg-purple-500/20 file:text-purple-400 hover:file:bg-purple-500/30 cursor-pointer"
+          />
+          
+          <button 
+            onClick={downloadTemplate}
+            className="text-indigo-400 text-sm font-bold flex items-center gap-2 hover:underline"
+          >
+            <DownloadCloud size={16} />
+            Download CSV Template
+          </button>
+        </div>
+
+        {fileData && (
+          <div className="mt-8 p-4 bg-green-500/10 border border-green-500/20 rounded-2xl">
+            <p className="text-green-400 font-bold">Ready to import {fileData.length} questions!</p>
+          </div>
+        )}
+
+        {error && <p className="mt-4 text-red-400 font-bold">{error}</p>}
+        {success && <p className="mt-4 text-green-400 font-bold">{success}</p>}
+
+        <button 
+          onClick={handleUpload}
+          disabled={loading || !fileData}
+          className="w-full gradient-btn rounded-2xl py-5 mt-10 text-lg font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {loading ? <Loader2 size={24} className="animate-spin" /> : <Save size={24} />}
+          Start Import
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// --- EXPORT VIEW ---
+const ExportView = ({ token }) => {
+  const [loading, setLoading] = useState(false);
+
+  const handleExport = async () => {
+    setLoading(true);
+    try {
+      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const res = await axios.get(`${baseURL}/api/admin/results/all`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      
+      const results = res.data;
+      if (results.length === 0) {
+        alert("No results to export!");
+        return;
+      }
+
+      const headers = "Name,Email,Score,Total,Time Taken,Date\n";
+      const rows = results.map(r => 
+        `"${r.name}","${r.email}",${r.score},${r.totalQuestions},"${r.timeTaken}","${new Date(r.createdAt).toLocaleString()}"`
+      ).join("\n");
+
+      const blob = new Blob([headers + rows], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `quiz_results_${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+    } catch (err) {
+      console.error(err);
+      alert("Failed to export results.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="glass-card p-10 rounded-[2.5rem] border-white/10 text-center max-w-2xl mx-auto">
+        <FileText size={64} className="text-indigo-400 mx-auto mb-6" />
+        <h2 className="text-3xl font-black text-white mb-2">Export Data</h2>
+        <p className="text-slate-400 mb-8">Generate a complete spreadsheet of all candidate performances.</p>
+
+        <button 
+          onClick={handleExport}
+          disabled={loading}
+          className="w-full gradient-btn rounded-2xl py-5 text-lg font-bold flex items-center justify-center gap-2 disabled:opacity-50"
+        >
+          {loading ? <Loader2 size={24} className="animate-spin" /> : <DownloadCloud size={24} />}
+          Download All Results (.CSV)
+        </button>
+
+        <p className="mt-8 text-xs text-slate-500 font-medium">
+          Format: Microsoft Excel compatible CSV
+        </p>
+      </div>
+    </div>
+  );
+};
+
 export default AdminDashboard;
+

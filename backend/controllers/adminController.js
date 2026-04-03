@@ -111,3 +111,27 @@ exports.getResults = async (req, res) => {
   }
 };
 
+exports.importQuestionsBulk = async (req, res) => {
+  try {
+    const { questions } = req.body;
+    if (!Array.isArray(questions)) {
+      return res.status(400).json({ message: 'Invalid data format. Expected an array of questions.' });
+    }
+    await Question.insertMany(questions);
+    res.status(201).json({ message: `${questions.length} questions imported successfully!` });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+exports.getResultsAll = async (req, res) => {
+  try {
+    const Result = require('../models/Result');
+    const results = await Result.find().sort({ createdAt: -1 });
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+
