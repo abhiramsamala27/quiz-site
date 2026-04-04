@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Timer, Send, AlertCircle, Loader2 } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const QuizSession = ({ user }) => {
   const [questions, setQuestions] = useState([]);
@@ -21,8 +21,7 @@ const QuizSession = ({ user }) => {
 
     const fetchQuestions = async () => {
       try {
-        const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-        const res = await axios.get(`${baseURL}/api/quiz/questions`);
+        const res = await api.get('/api/quiz/questions');
         setQuestions(res.data);
         setLoading(false);
       } catch (err) {
@@ -83,8 +82,7 @@ const QuizSession = ({ user }) => {
     const timeTakenStr = formatTimeToken(timeUsed);
 
     try {
-      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      const res = await axios.post(`${baseURL}/api/quiz/submit`, {
+      const res = await api.post('/api/quiz/submit', {
         name: user.name,
         email: user.email,
         answers: answers,

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Lock, Mail, Loader2, ShieldCheck, AlertCircle } from 'lucide-react';
-import axios from 'axios';
+import api from '../utils/api';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -17,8 +17,7 @@ const AdminLogin = () => {
     setError('');
 
     try {
-      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      const res = await axios.post(`${baseURL}/api/admin/login`, { email, password });
+      const res = await api.post('/api/admin/login', { email, password });
       localStorage.setItem('quiz_admin_token', res.data.token);
       navigate('/admin/dashboard');
     } catch (err) {
