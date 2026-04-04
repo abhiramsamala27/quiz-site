@@ -165,4 +165,14 @@ exports.getResultsAll = async (req, res) => {
   }
 };
 
+exports.deleteAllResults = async (req, res) => {
+  try {
+    const Result = require('../models/Result');
+    await Result.deleteMany({});
+    res.json({ message: 'All candidate records have been successfully cleared.' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 

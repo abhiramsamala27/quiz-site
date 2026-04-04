@@ -189,6 +189,20 @@ const ResultsView = ({ token }) => {
     }
   };
 
+  const clearAllResults = async () => {
+    if (!window.confirm('Are you sure you want to permanently delete ALL candidate results? This action cannot be undone.')) return;
+    try {
+      await api.delete('/api/admin/results', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      fetchResults();
+      alert('All results have been cleared.');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to clear results.');
+    }
+  };
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -203,6 +217,13 @@ const ResultsView = ({ token }) => {
           </h2>
           <p className="text-[var(--text-muted)] text-sm mt-1">Review secure candidate records and performance metrics.</p>
         </div>
+        <button
+          onClick={clearAllResults}
+          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-red-500/10 hover:bg-red-500/20 text-red-500 font-bold transition-all border border-red-500/10 hover:border-red-500/20"
+        >
+          <Trash2 size={18} />
+          Clear All Records
+        </button>
       </div>
 
       {/* Summary Stats */}

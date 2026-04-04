@@ -11,6 +11,7 @@ router.delete('/questions/:id', auth, adminController.deleteQuestion);
 
 router.get('/results', auth, adminController.getResults);
 router.get('/results/all', auth, adminController.getResultsAll);
+router.delete('/results', auth, adminController.deleteAllResults);
 router.post('/questions/bulk', auth, adminController.importQuestionsBulk);
 
 module.exports = router;
