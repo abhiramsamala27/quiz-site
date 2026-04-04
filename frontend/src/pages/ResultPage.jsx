@@ -29,14 +29,13 @@ const ResultPage = ({ user }) => {
   const feedback = getFeedback();
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[85vh] py-10">
+    <div className="flex flex-col items-center justify-center min-h-screen py-10 px-4">
       <motion.div 
-        initial={{ scale: 0.8, opacity: 0 }}
+        initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        transition={{ type: "spring", damping: 12 }}
-        className="glass-card p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] text-center max-w-3xl w-full border-white/20 relative shadow-2xl"
+        className="glass-card p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] text-center max-w-4xl w-full border-[var(--card-border)] relative shadow-2xl"
       >
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-3xl shadow-2xl shadow-indigo-500/40 scale-75 md:scale-100">
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-purple-600 to-blue-500 rounded-3xl shadow-2xl">
           <Trophy size={48} className="text-white fill-white/10" />
         </div>
 
@@ -46,53 +45,53 @@ const ResultPage = ({ user }) => {
           transition={{ delay: 0.3 }}
           className="mt-6 md:mt-8"
         >
-          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight">Assessment Result</h1>
-          <p className="text-slate-400 text-base md:text-xl font-medium">Hello, <span className="text-white font-bold">{user?.name}</span>. Here is your mock performance scorecard.</p>
+          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight text-[var(--text-main)]">Assessment Result</h1>
+          <p className="text-[var(--text-muted)] text-base md:text-xl font-bold">Hello, <span className="text-blue-600">{user?.name}</span>. Here is your scorecard.</p>
         </motion.div>
 
-        <div className="my-8 md:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-          <div className="relative">
+        <div className="my-8 md:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center text-left">
+          <div className="relative max-w-[240px] mx-auto w-full">
              <svg className="w-full h-auto transform -rotate-90" viewBox="0 0 100 100">
                <circle 
                  cx="50" cy="50" r="45" 
                  fill="none" 
-                 strokeWidth="8" 
-                 className="stroke-white/5" 
+                 strokeWidth="10" 
+                 className="stroke-[var(--card-border)]" 
                />
                <motion.circle 
                  cx="50" cy="50" r="45" 
                  fill="none" 
-                 strokeWidth="8" 
+                 strokeWidth="10" 
                  strokeDasharray="283" 
                  strokeLinecap="round"
-                 className="stroke-indigo-500"
+                 className="stroke-blue-500"
                  initial={{ strokeDashoffset: 283 }}
                  animate={{ strokeDashoffset: 283 - (283 * percentage) / 100 }}
                  transition={{ duration: 1.5, ease: "easeOut" }}
                />
              </svg>
              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-5xl font-black">{result.score}</span>
-                <span className="text-sm font-bold text-slate-500 uppercase tracking-widest leading-none">/ {result.totalQuestions}</span>
+                <span className="text-6xl font-black text-[var(--text-main)]">{result.score}</span>
+                <span className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest leading-none">/ {result.totalQuestions}</span>
              </div>
           </div>
 
-          <div className="text-left space-y-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-white/5 rounded-2xl">
+          <div className="space-y-6">
+            <div className="flex items-start gap-4 bg-[var(--input-bg)] p-6 rounded-2xl border border-[var(--card-border)]">
+              <div className="p-3 bg-white rounded-xl shadow-sm">
                  {feedback.icon}
               </div>
               <div>
-                 <h3 className="text-xl font-bold mb-1">{feedback.title}</h3>
-                 <p className="text-slate-400 text-sm leading-relaxed">{feedback.desc}</p>
+                 <h3 className="text-xl font-bold mb-1 text-[var(--text-main)]">{feedback.title}</h3>
+                 <p className="text-[var(--text-main)] text-sm font-medium leading-relaxed">{feedback.desc}</p>
               </div>
             </div>
 
-            <div className="flex items-center gap-4 glass p-4 rounded-2xl border-white/5">
-              <div className="bg-green-500/20 p-2 rounded-lg">
-                <Mail size={18} className="text-green-400" />
+            <div className="flex items-center gap-4 bg-green-50 p-4 rounded-xl border border-green-100">
+              <div className="bg-green-500 p-2 rounded-lg">
+                <Mail size={18} className="text-white" />
               </div>
-              <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+              <span className="text-xs font-bold text-green-700 uppercase tracking-wider">
                 Full report sent to {user?.email}
               </span>
             </div>
@@ -102,19 +101,20 @@ const ResultPage = ({ user }) => {
         <div className="flex justify-center mt-12">
            <button 
              onClick={() => navigate('/')} 
-             className="glass-card bg-white/10 py-5 px-12 rounded-[2rem] text-lg font-bold flex items-center justify-center gap-3 border border-white/10 hover:bg-white/20 transition-all max-w-sm w-full mx-auto"
+             className="gradient-btn py-5 px-12 rounded-[2rem] text-lg font-bold flex items-center justify-center gap-3 w-full md:w-auto"
            >
-             <LayoutDashboard size={22} className="text-indigo-400" />
+             <LayoutDashboard size={22} />
              Leave Dashboard
            </button>
         </div>
       </motion.div>
 
-      <div className="mt-12 flex items-center gap-2 text-slate-500 font-medium">
-        <Sparkles size={16} className="text-yellow-500" />
-        <span className="text-sm">Global IQ Ranking: #4,291 among top elite participants</span>
+      <div className="mt-12 flex items-center gap-3 text-[var(--text-muted)] font-bold text-sm tracking-widest uppercase">
+        <Sparkles size={20} className="text-yellow-500" />
+        Assessment Validated via Secure Channel
       </div>
     </div>
+
   );
 };
 

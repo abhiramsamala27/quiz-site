@@ -94,16 +94,47 @@ exports.getResults = async (req, res) => {
 
     const allStats = await Result.aggregate([
       {
-        $group: {
-          _id: null,
-          totalAttempts: { $sum: 1 },
-          avgScore: { $avg: "$score" },
-          highestScore: { $max: "$score" }
+        $facet: {
+          metrics: [
+            {
+              $group: {
+                _id: null,
+                totalAttempts: { $sum: 1 },
+                highestScore: { $max: "$score" }
+              }
+            }
+          ],
+          candidates: [
+            { $group: { _id: "$email" } },
+            { $count: "count" }
+          ],
+          qualified: [
+            {
+              $group: {
+                _id: "$email",
+                bestScore: { $max: "$score" },
+                totalQ: { $first: "$totalQuestions" }
+              }
+            },
+            {
+              $match: {
+                $expr: {
+                  $gte: [{ $divide: ["$bestScore", "$totalQ"] }, 0.7]
+                }
+              }
+            },
+            { $count: "count" }
+          ]
         }
       }
     ]);
 
-    const stats = allStats[0] || { totalAttempts: 0, avgScore: 0, highestScore: 0 };
+    const stats = {
+      totalAttempts: allStats[0].metrics[0]?.totalAttempts || 0,
+      totalCandidates: allStats[0].candidates[0]?.count || 0,
+      qualifiedCandidates: allStats[0].qualified[0]?.count || 0,
+      highestScore: allStats[0].metrics[0]?.highestScore || 0
+    };
 
     res.json({ total, results, page, pages: Math.ceil(total / limit), stats });
   } catch (err) {

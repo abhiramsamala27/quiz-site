@@ -6,6 +6,7 @@ import ResultPage from './pages/ResultPage';
 import AdminLogin from './pages/AdminLogin';
 import AdminDashboard from './pages/AdminDashboard';
 import Logo from './components/Logo';
+import ThemeToggle from './components/ThemeToggle';
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -26,7 +27,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen text-slate-100 selection:bg-indigo-500/30 relative">
+    <div className="min-h-screen selection:bg-indigo-500/30 relative">
+      <ThemeToggle />
       <Logo />
       <main className="container mx-auto px-4 pt-20 pb-8 max-w-6xl">
         <Routes>

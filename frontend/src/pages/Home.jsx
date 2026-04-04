@@ -34,19 +34,19 @@ const Home = ({ onStart }) => {
             <Zap size={32} className="text-indigo-400 fill-indigo-400/20" />
           </div>
 
-          <h1 className="text-2xl md:text-4xl font-black mb-8 tracking-tight text-white">
+          <h1 className="text-2xl md:text-4xl font-black mb-8 tracking-tight text-[var(--text-main)]">
             Mock Assessment
           </h1>
 
           <form onSubmit={handleSubmit} className="space-y-6 text-left">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-400 ml-1">Full Name</label>
+              <label className="text-sm font-bold text-[var(--text-muted)] ml-1">Full Name</label>
               <div className="relative">
-                <User size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <User size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
                   type="text" 
                   placeholder="John Doe"
-                  className="w-full glass-input rounded-2xl py-4 pl-12 pr-6 outline-none text-white text-lg transition-all focus:bg-white/10"
+                  className="w-full glass-input rounded-2xl py-4 pl-12 pr-6 outline-none text-[var(--text-main)] text-lg transition-all focus:bg-white/10"
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                   required
@@ -55,13 +55,13 @@ const Home = ({ onStart }) => {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-400 ml-1">Work Email</label>
+              <label className="text-sm font-bold text-[var(--text-muted)] ml-1">Work Email</label>
               <div className="relative">
-                <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+                <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
                   type="email" 
                   placeholder="john@example.com"
-                  className="w-full glass-input rounded-2xl py-4 pl-12 pr-6 outline-none text-white text-lg transition-all focus:bg-white/10"
+                  className="w-full glass-input rounded-2xl py-4 pl-12 pr-6 outline-none text-[var(--text-main)] text-lg transition-all focus:bg-white/10"
                   value={formData.email}
                   onChange={e => setFormData({ ...formData, email: e.target.value })}
                   required
@@ -69,26 +69,29 @@ const Home = ({ onStart }) => {
               </div>
             </div>
 
-            {error && <p className="text-red-400 text-sm font-medium animate-pulse text-center">{error}</p>}
+            {error && <p className="text-red-500 text-sm font-bold animate-pulse text-center">{error}</p>}
 
             <button type="submit" className="w-full gradient-btn rounded-2xl py-5 text-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/25">
               Begin Now 🚀
             </button>
           </form>
 
-          <div className="mt-8 pt-6 border-t border-white/10 flex justify-center">
+          <div className="mt-8 pt-6 border-t border-[var(--card-border)] flex justify-center">
             <Link 
               to="/admin/login" 
-              className="flex items-center gap-2 text-sm font-medium text-slate-400 hover:text-indigo-400 transition-colors group"
+              className="flex items-center gap-2 text-sm font-bold text-[var(--text-muted)] hover:text-indigo-500 transition-colors group"
             >
               <ShieldCheck size={16} className="group-hover:scale-110 transition-transform" />
               Admin Access
             </Link>
           </div>
+
         </div>
       </motion.div>
     </div>
   );
 };
+
+
 
 export default Home;
