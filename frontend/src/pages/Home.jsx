@@ -24,7 +24,7 @@ const Home = ({ onStart }) => {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="glass-card p-6 md:p-14 rounded-[2rem] md:rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
+        className="glass-card p-5 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] w-full max-w-[420px] border-white/20 shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -34,13 +34,13 @@ const Home = ({ onStart }) => {
             <Zap size={32} className="text-indigo-400 fill-indigo-400/20" />
           </div>
 
-          <h1 className="text-2xl md:text-4xl font-black mb-8 tracking-tight text-[var(--text-main)]">
+          <h1 className="text-xl md:text-3xl font-black mb-6 md:mb-8 tracking-tight text-[var(--text-main)]">
             Mock Assessment
           </h1>
 
-          <form onSubmit={handleSubmit} className="space-y-6 text-left">
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-[var(--text-muted)] ml-1">Full Name</label>
+          <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6 text-left">
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-xs md:text-sm font-bold text-[var(--text-muted)] ml-1">Full Name</label>
               <div className="relative">
                 <User size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
@@ -54,8 +54,8 @@ const Home = ({ onStart }) => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-[var(--text-muted)] ml-1">Work Email</label>
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-xs md:text-sm font-bold text-[var(--text-muted)] ml-1">Work Email</label>
               <div className="relative">
                 <Mail size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
@@ -69,9 +69,9 @@ const Home = ({ onStart }) => {
               </div>
             </div>
 
-            {error && <p className="text-red-500 text-sm font-bold animate-pulse text-center">{error}</p>}
+            {error && <p className="text-red-500 text-xs md:text-sm font-bold animate-pulse text-center">{error}</p>}
 
-            <button type="submit" className="w-full gradient-btn rounded-2xl py-5 text-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/25">
+            <button type="submit" className="w-full gradient-btn rounded-xl md:rounded-2xl py-3 md:py-4 text-base md:text-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/25 min-h-[44px]">
               Begin Now 🚀
             </button>
           </form>

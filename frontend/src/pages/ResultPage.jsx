@@ -33,7 +33,7 @@ const ResultPage = ({ user }) => {
       <motion.div 
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="glass-card p-6 md:p-16 rounded-[2.5rem] md:rounded-[4rem] text-center max-w-4xl w-full border-[var(--card-border)] relative shadow-2xl"
+        className="glass-card p-5 md:p-16 rounded-[1.5rem] md:rounded-[4rem] text-center max-w-4xl w-full border-[var(--card-border)] relative shadow-2xl"
       >
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-purple-600 to-blue-500 rounded-3xl shadow-2xl">
           <Trophy size={48} className="text-white fill-white/10" />
@@ -43,10 +43,10 @@ const ResultPage = ({ user }) => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 md:mt-8"
+          className="mt-8 md:mt-8"
         >
-          <h1 className="text-3xl md:text-6xl font-black mb-4 tracking-tight text-[var(--text-main)]">Assessment Result</h1>
-          <p className="text-[var(--text-muted)] text-base md:text-xl font-bold">Hello, <span className="text-blue-600">{user?.name}</span>. Here is your scorecard.</p>
+          <h1 className="text-2xl md:text-6xl font-black mb-3 md:mb-4 tracking-tight text-[var(--text-main)]">Assessment Result</h1>
+          <p className="text-[var(--text-muted)] text-sm md:text-xl font-bold">Hello, <span className="text-blue-600">{user?.name}</span>. Here is your scorecard.</p>
         </motion.div>
 
         <div className="my-8 md:my-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center text-left">
@@ -77,13 +77,13 @@ const ResultPage = ({ user }) => {
           </div>
 
           <div className="space-y-6">
-            <div className="flex items-start gap-4 bg-[var(--input-bg)] p-6 rounded-2xl border border-[var(--card-border)]">
-              <div className="p-3 bg-white rounded-xl shadow-sm">
+            <div className="flex items-start gap-4 bg-[var(--input-bg)] p-4 md:p-6 rounded-2xl border border-[var(--card-border)]">
+              <div className="p-3 bg-white rounded-xl shadow-sm shrink-0">
                  {feedback.icon}
               </div>
               <div>
-                 <h3 className="text-xl font-bold mb-1 text-[var(--text-main)]">{feedback.title}</h3>
-                 <p className="text-[var(--text-main)] text-sm font-medium leading-relaxed">{feedback.desc}</p>
+                 <h3 className="text-lg md:text-xl font-bold mb-1 text-[var(--text-main)]">{feedback.title}</h3>
+                 <p className="text-[var(--text-main)] text-xs md:text-sm font-medium leading-relaxed">{feedback.desc}</p>
               </div>
             </div>
 
@@ -101,9 +101,9 @@ const ResultPage = ({ user }) => {
         <div className="flex justify-center mt-12">
            <button 
              onClick={() => navigate('/')} 
-             className="gradient-btn py-5 px-12 rounded-[2rem] text-lg font-bold flex items-center justify-center gap-3 w-full md:w-auto"
+             className="gradient-btn py-3 md:py-5 px-6 md:px-12 rounded-xl md:rounded-[2rem] text-base md:text-lg font-bold flex items-center justify-center gap-3 w-full md:w-auto min-h-[44px]"
            >
-             <LayoutDashboard size={22} />
+             <LayoutDashboard size={20} className="md:w-[22px] md:h-[22px]" />
              Leave Dashboard
            </button>
         </div>

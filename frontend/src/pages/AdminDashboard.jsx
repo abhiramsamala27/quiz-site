@@ -210,9 +210,9 @@ const ResultsView = ({ token }) => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-6 rounded-[2rem] border-[var(--card-border)]">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-[var(--card-border)]">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
+          <h2 className="text-xl md:text-2xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
             Overview Performance
           </h2>
           <p className="text-[var(--text-muted)] text-sm mt-1">Review secure candidate records and performance metrics.</p>
@@ -227,43 +227,43 @@ const ResultsView = ({ token }) => {
       </div>
 
       {/* Summary Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="glass-card p-6 rounded-[2rem] border-[var(--card-border)] flex items-center gap-6">
-          <div className="p-4 bg-blue-500/20 rounded-2xl">
-            <Users size={32} className="text-blue-400" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        <div className="glass-card p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-[var(--card-border)] flex items-center gap-4 md:gap-6">
+          <div className="p-3 md:p-4 bg-blue-500/20 rounded-xl md:rounded-2xl">
+            <Users size={28} className="text-blue-400" />
           </div>
           <div>
-            <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Total Candidates</p>
-            <h3 className="text-3xl font-black text-[var(--text-main)]">{stats.totalCandidates}</h3>
+            <p className="text-xs md:text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Total Candidates</p>
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--text-main)]">{stats.totalCandidates}</h3>
           </div>
         </div>
 
-        <div className="glass-card p-6 rounded-[2rem] border-[var(--card-border)] flex items-center gap-6">
-          <div className="p-4 bg-purple-500/20 rounded-2xl">
-            <Target size={32} className="text-purple-400" />
+        <div className="glass-card p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-[var(--card-border)] flex items-center gap-4 md:gap-6">
+          <div className="p-3 md:p-4 bg-purple-500/20 rounded-xl md:rounded-2xl">
+            <Target size={28} className="text-purple-400" />
           </div>
           <div>
-            <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Qualified Leads</p>
-            <h3 className="text-3xl font-black text-[var(--text-main)]">{stats.qualifiedCandidates}</h3>
+            <p className="text-xs md:text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Qualified Leads</p>
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--text-main)]">{stats.qualifiedCandidates}</h3>
           </div>
         </div>
 
-        <div className="glass-card p-6 rounded-[2rem] border-[var(--card-border)] flex items-center gap-6">
-          <div className="p-4 bg-yellow-500/20 rounded-2xl">
-            <Trophy size={32} className="text-yellow-400" />
+        <div className="glass-card p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-[var(--card-border)] flex items-center gap-4 md:gap-6 sm:col-span-2 md:col-span-1">
+          <div className="p-3 md:p-4 bg-yellow-500/20 rounded-xl md:rounded-2xl">
+            <Trophy size={28} className="text-yellow-400" />
           </div>
           <div>
-            <p className="text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Highest Score</p>
-            <h3 className="text-3xl font-black text-[var(--text-main)]">{stats.highestScore}</h3>
+            <p className="text-xs md:text-sm font-bold text-[var(--text-muted)] uppercase tracking-widest">Highest Score</p>
+            <h3 className="text-2xl md:text-3xl font-black text-[var(--text-main)]">{stats.highestScore}</h3>
           </div>
         </div>
       </div>
 
       {/* Main Content Area */}
-      <div className="glass-card rounded-[2.5rem] border-[var(--card-border)] overflow-hidden">
+      <div className="glass-card rounded-[1.5rem] md:rounded-[2.5rem] border-[var(--card-border)] overflow-hidden">
         {/* Search */}
-        <div className="p-6 md:p-8 border-b border-[var(--card-border)] flex flex-col md:flex-row justify-between items-center gap-4">
-          <h2 className="text-xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
+        <div className="p-4 md:p-8 border-b border-[var(--card-border)] flex flex-col md:flex-row justify-between items-center gap-4">
+          <h2 className="text-lg md:text-xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
             Candidate Results
           </h2>
           <div className="relative w-full md:w-96 shrink-0">
@@ -351,11 +351,11 @@ const ResultsView = ({ token }) => {
 
         {/* Pagination */}
         {!loading && pages > 1 && (
-          <div className="p-6 border-t border-[var(--card-border)] flex justify-center items-center gap-4">
+          <div className="p-4 md:p-6 border-t border-[var(--card-border)] flex justify-center items-center gap-3 md:gap-4">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="glass p-3 rounded-xl disabled:opacity-30 hover:bg-white/10 transition-all border border-[var(--card-border)] text-[var(--text-main)]"
+              className="glass p-2 md:p-3 rounded-lg md:rounded-xl disabled:opacity-30 hover:bg-white/10 transition-all border border-[var(--card-border)] text-[var(--text-main)]"
             >
               <ChevronLeft size={20} />
             </button>
@@ -484,9 +484,9 @@ const QuestionsView = ({ token }) => {
     <div className="space-y-6">
 
       {/* Header Bar */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-6 rounded-[2rem] border-[var(--card-border)]">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 glass-card p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] border-[var(--card-border)]">
         <div>
-          <h2 className="text-2xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
+          <h2 className="text-xl md:text-2xl font-bold flex items-center gap-3 w-full text-[var(--text-main)]">
             Question Bank
           </h2>
           <p className="text-[var(--text-muted)] text-sm mt-1">Manage and update your quiz questions</p>
@@ -599,7 +599,7 @@ const QuestionsView = ({ token }) => {
       </AnimatePresence>
 
       {/* Questions List */}
-      <div className="glass-card rounded-[2rem] md:rounded-[2.5rem] border-[var(--card-border)] overflow-hidden">
+      <div className="glass-card rounded-[1.5rem] md:rounded-[2.5rem] border-[var(--card-border)] overflow-hidden">
         {/* Desktop Table View */}
         <div className="hidden md:block overflow-x-auto">
           {loading ? (
@@ -675,11 +675,11 @@ const QuestionsView = ({ token }) => {
 
         {/* Pagination */}
         {!loading && pages > 1 && (
-          <div className="p-6 border-t border-[var(--card-border)] flex justify-center items-center gap-4 bg-black/10">
+          <div className="p-4 md:p-6 border-t border-[var(--card-border)] flex justify-center items-center gap-3 md:gap-4 bg-black/10">
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="glass p-3 rounded-xl disabled:opacity-30 hover:bg-white/10 transition-all border border-[var(--card-border)] text-[var(--text-main)]"
+              className="glass p-2 md:p-3 rounded-lg md:rounded-xl disabled:opacity-30 hover:bg-white/10 transition-all border border-[var(--card-border)] text-[var(--text-main)]"
             >
               <ChevronLeft size={20} />
             </button>
@@ -762,9 +762,9 @@ const BulkImportView = ({ token }) => {
 
   return (
     <div className="space-y-6">
-      <div className="glass-card p-10 rounded-[2.5rem] border-[var(--card-border)] text-center max-w-2xl mx-auto">
-        <UploadCloud size={64} className="text-purple-400 mx-auto mb-6" />
-        <h2 className="text-3xl font-black text-[var(--text-main)] mb-2">Bulk Import</h2>
+      <div className="glass-card p-6 md:p-10 rounded-[1.5rem] md:rounded-[2.5rem] border-[var(--card-border)] text-center max-w-2xl mx-auto w-full">
+        <UploadCloud size={64} className="text-purple-400 mx-auto mb-6 shrink-0" />
+        <h2 className="text-2xl md:text-3xl font-black text-[var(--text-main)] mb-2">Bulk Import</h2>
         <p className="text-[var(--text-muted)] mb-8">Upload a CSV file to add multiple questions instantly.</p>
 
         <div className="flex flex-col items-center gap-4">

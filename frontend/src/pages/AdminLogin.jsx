@@ -31,7 +31,7 @@ const AdminLogin = () => {
       <motion.div 
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card p-6 md:p-14 rounded-[2rem] md:rounded-[3rem] w-full max-w-lg border-white/20 shadow-2xl relative overflow-hidden"
+        className="glass-card p-5 md:p-12 rounded-[1.5rem] md:rounded-[2.5rem] w-full max-w-[420px] border-white/20 shadow-2xl relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -41,12 +41,12 @@ const AdminLogin = () => {
             <Lock size={32} className="text-blue-600" />
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-black text-center mb-2 tracking-tight text-[var(--text-main)]">Interviewer Portal</h1>
-          <p className="text-[var(--text-muted)] text-center mb-10 font-medium">Verify your credentials to manage assessments.</p>
+          <h1 className="text-2xl md:text-3xl font-black text-center mb-2 tracking-tight text-[var(--text-main)]">Interviewer Portal</h1>
+          <p className="text-[var(--text-muted)] text-center text-sm md:text-base mb-8 md:mb-10 font-medium">Verify your credentials to manage assessments.</p>
 
-          <form onSubmit={handleLogin} className="space-y-6">
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-[var(--text-main)] ml-1">Email Address</label>
+          <form onSubmit={handleLogin} className="space-y-4 md:space-y-6">
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-xs md:text-sm font-bold text-[var(--text-main)] ml-1">Email Address</label>
               <div className="relative">
                 <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
@@ -60,8 +60,8 @@ const AdminLogin = () => {
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-sm font-bold text-[var(--text-main)] ml-1">Security Key or Password</label>
+            <div className="space-y-1.5 md:space-y-2">
+              <label className="text-xs md:text-sm font-bold text-[var(--text-main)] ml-1">Security Key or Password</label>
               <div className="relative">
                 <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
                 <input 
@@ -89,13 +89,13 @@ const AdminLogin = () => {
             <button 
               type="submit" 
               disabled={loading}
-              className="w-full gradient-btn py-5 rounded-[2rem] text-lg font-bold flex items-center justify-center gap-3 shadow-xl group"
+              className="w-full gradient-btn min-h-[44px] py-3 md:py-4 rounded-xl md:rounded-2xl text-base md:text-lg font-bold flex items-center justify-center gap-3 shadow-xl group"
             >
               {loading ? (
                 <Loader2 size={24} className="animate-spin" />
               ) : (
                 <>
-                  <ShieldCheck size={24} className="group-hover:scale-110 transition-transform" />
+                  <ShieldCheck size={20} className="group-hover:scale-110 transition-transform md:w-6 md:h-6" />
                   Authenticate Access
                 </>
               )}
