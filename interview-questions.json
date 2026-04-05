@@ -1,0 +1,302 @@
+[
+  {
+    "question": "What will be the output of 2 + 2 * 3?",
+    "options": ["10", "8", "6", "12"],
+    "correctAnswer": "8",
+    "category": "Aptitude"
+  },
+  {
+    "question": "If a person walks at 14 km/hr instead of 10 km/hr, he would have walked 20 km more. The actual distance travelled by him is:",
+    options: ["50 km", "56 km", "70 km", "80 km"],
+    correctAnswer: "50 km",
+    category: "Aptitude"
+  },
+  {
+    "question": "A merchant buys a watch for ₹500 and sells it for ₹600. What is his profit percentage?",
+    options: ["10%", "15%", "20%", "25%"],
+    correctAnswer: "20%",
+    category: "Aptitude"
+  },
+  {
+    "question": "A tank can be filled by pipe A in 10 hours and by pipe B in 15 hours. If both pipes are opened together, how much time will it take to fill the tank?",
+    options: ["4 hours", "5 hours", "6 hours", "8 hours"],
+    correctAnswer: "6 hours",
+    category: "Aptitude"
+  },
+  {
+    "question": "What is 15% of 60?",
+    options: ["6", "9", "12", "15"],
+    correctAnswer: "9",
+    category: "Aptitude"
+  },
+  {
+    "question": "If the ratio of two numbers is 3:4 and their sum is 70, find the larger number.",
+    options: ["30", "40", "35", "50"],
+    correctAnswer: "40",
+    category: "Aptitude"
+  },
+  {
+    question: "Calculate the simple interest on ₹1000 for 2 years at an annual interest rate of 5%.",
+    options: ["₹50", "₹100", "₹150", "₹200"],
+    correctAnswer: "₹100",
+    category: "Aptitude"
+  },
+  {
+    question: "A train running at the speed of 60 km/hr crosses a pole in 9 seconds. What is the length of the train?",
+    options: ["120 metres", "180 metres", "324 metres", "150 metres"],
+    correctAnswer: "150 metres",
+    category: "Aptitude"
+  },
+  {
+    question: "A and B together can do a piece of work in 15 days. If B alone can do it in 20 days, how many days will A alone take to do it?",
+    options: ["30 days", "40 days", "60 days", "45 days"],
+    correctAnswer: "60 days",
+    category: "Aptitude"
+  },
+  {
+    question: "The cost price of 20 articles is equal to the selling price of 16 articles. The gain percent is:",
+    options: ["20%", "25%", "30%", "15%"],
+    correctAnswer: "25%",
+    category: "Aptitude"
+  },
+  {
+    "question": "Look at this series: 2, 6, 18, 54, ... What number should come next?",
+    options: ["108", "148", "162", "216"],
+    correctAnswer: "162",
+    category: "Logical Reasoning"
+  },
+  {
+    "question": "If in a certain language, MADRAS is coded as NBESBT, how is BOMBAY coded in that language?",
+    options: ["CPNCBX", "CPNCBZ", "CPOCBZ", "CQOCBZ"],
+    correctAnswer: "CPNCBZ",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "A is the brother of B. B is the brother of C. D is the father of A. Based on these three statements, which of the following is definitely true?",
+    options: ["C is the brother of A", "A is the brother of C", "B is the son of D", "C is the son of D"],
+    correctAnswer: "A is the brother of C",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Ravi walks 10 km towards North. From there he walks 6 km towards South. Then, he walks 3 km towards East. How far and in which direction is he with reference to his starting point?",
+    options: ["5 km West", "7 km East", "5 km North-East", "7 km West"],
+    correctAnswer: "5 km North-East",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Find the odd one out among the following.",
+    options: ["Circle", "Square", "Sphere", "Triangle"],
+    correctAnswer: "Sphere",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Syllogism: Statements: Some cats are dogs. All dogs are birds. Conclusions: 1. Some cats are birds. 2. Some birds are dogs.",
+    options: ["Only 1 follows", "Only 2 follows", "Both 1 and 2 follow", "Neither 1 nor 2 follows"],
+    correctAnswer: "Both 1 and 2 follow",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Pointing to a photograph, a man said, 'I have no brother or sister but that man's father is my father's son.' Whose photograph was it?",
+    options: ["His own", "His son's", "His father's", "His nephew's"],
+    correctAnswer: "His son's",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "If A + B means A is the father of B; A - B means A is the brother B; A % B means A is the wife of B and A x B means A is the mother of B, which of the following shows that M is the maternal grandmother of T?",
+    options: ["M x N % S + T", "M x N - S % T", "M x S - N % T", "M x N x S % T"],
+    correctAnswer: "M x N % S + T",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Look at this series: 36, 34, 30, 28, 24, ... What number should come next?",
+    options: ["20", "22", "23", "26"],
+    correctAnswer: "22",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Odometer is to mileage as compass is to:",
+    options: ["Speed", "Hiking", "Needle", "Direction"],
+    correctAnswer: "Direction",
+    category: "Logical Reasoning"
+  },
+  {
+    question: "Choose the exact SYNONYM of the given word: 'CANDID'",
+    options: ["Dishonest", "Frank", "Vague", "Secretive"],
+    correctAnswer: "Frank",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Choose the exact ANTONYM of the given word: 'DILIGENT'",
+    options: ["Hardworking", "Lazy", "Intelligent", "Careful"],
+    correctAnswer: "Lazy",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Fill in the blank: The management strongly _______ the project as it involved a lot of risks.",
+    options: ["recommended", "opposed", "initiated", "completed"],
+    correctAnswer: "opposed",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Identify the incorrect part of the sentence: 'She has been working here / since three years / and is very experienced.'",
+    options: ["She has been working here", "since three years", "and is very experienced", "No error"],
+    correctAnswer: "since three years",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Which of the following sentences correctly uses the past perfect tense?",
+    options: ["I had finished my dinner before the guests arrived.", "I finished my dinner before the guests arrive.", "I have finished my dinner before the guests had arrived.", "I had finishing my dinner before the guests arrived."],
+    correctAnswer: "I had finished my dinner before the guests arrived.",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Choose the correct preposition: She is very good _______ painting.",
+    options: ["in", "at", "with", "for"],
+    correctAnswer: "at",
+    category: "Verbal Ability"
+  },
+  {
+    question: "What is the meaning of the idiom 'To bite the bullet'?",
+    options: ["To eat very fast", "To face a difficult situation bravely", "To get angry", "To ignore someone intentionally"],
+    correctAnswer: "To face a difficult situation bravely",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Replace the underlined phrase with the correct option: He is 'looking forward to meet' you.",
+    options: ["looking forward to meeting", "looking forward meeting", "looking forward to met", "No correction required"],
+    correctAnswer: "looking forward to meeting",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Select the correctly spelt word.",
+    options: ["Accomodation", "Accommodation", "Acommodation", "Acomodation"],
+    correctAnswer: "Accommodation",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Fill in the blank: Neither of the two plans _______ entirely successful.",
+    options: ["was", "were", "are", "have been"],
+    correctAnswer: "was",
+    category: "Verbal Ability"
+  },
+  {
+    question: "Which of the following is not an OOP concept?",
+    options: ["Encapsulation", "Polymorphism", "Compilation", "Inheritance"],
+    correctAnswer: "Compilation",
+    category: "Technical"
+  },
+  {
+    question: "What does SQL stand for?",
+    options: ["Strong Question Language", "Structured Query Language", "Structured Question Language", "Simple Query Language"],
+    correctAnswer: "Structured Query Language",
+    category: "Technical"
+  },
+  {
+    question: "Which data structure uses LIFO (Last In First Out) principle?",
+    options: ["Queue", "Stack", "Array", "Linked List"],
+    correctAnswer: "Stack",
+    category: "Technical"
+  },
+  {
+    question: "What is the time complexity of binary search on a sorted array?",
+    options: ["O(1)", "O(n)", "O(log n)", "O(n log n)"],
+    correctAnswer: "O(log n)",
+    category: "Technical"
+  },
+  {
+    question: "Which protocol is responsible for resolving a domain name into an IP address?",
+    options: ["HTTP", "TCP", "DNS", "FTP"],
+    correctAnswer: "DNS",
+    category: "Technical"
+  },
+  {
+    question: "In Operating Systems, what problem does a 'Mutex' solve?",
+    options: ["Memory Leaks", "Deadlocks", "Race Conditions", "Fragmentation"],
+    correctAnswer: "Race Conditions",
+    category: "Technical"
+  },
+  {
+    question: "Which normal form in DBMS deals with the removal of transitive dependencies?",
+    options: ["First Normal Form (1NF)", "Second Normal Form (2NF)", "Third Normal Form (3NF)", "Boyce-Codd Normal Form (BCNF)"],
+    correctAnswer: "Third Normal Form (3NF)",
+    category: "Technical"
+  },
+  {
+    question: "What is the primary function of a router in a computer network?",
+    options: ["To store data packets", "To forward data packets between networks", "To provide firewall security", "To assign IP addresses via DHCP"],
+    correctAnswer: "To forward data packets between networks",
+    category: "Technical"
+  },
+  {
+    question: "Which of these is a valid completely open-source relational database management system?",
+    options: ["Oracle DB", "Microsoft SQL Server", "PostgreSQL", "IBM DB2"],
+    correctAnswer: "PostgreSQL",
+    category: "Technical"
+  },
+  {
+    question: "In Git version control, what does the command 'git commit' do?",
+    options: ["Uploads files to the remote server", "Saves local snapshot of changes", "Creates a new branch", "Merges two branches together"],
+    correctAnswer: "Saves local snapshot of changes",
+    category: "Technical"
+  },
+  {
+    question: "You notice a coworker struggling with a task that you are proficient in, but you have your own deadline approaching. What should you do?",
+    options: ["Ignore them to focus on your work", "Do the task for them quickly", "Offer brief guidance without jeopardizing your own deadline", "Tell your manager they are incompetent"],
+    correctAnswer: "Offer brief guidance without jeopardizing your own deadline",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "A client is extremely angry about a delay in your project delivery. What is your first step?",
+    options: ["Argue that it was not your fault", "Listen actively and acknowledge their frustration", "Hang up or walk away until they calm down", "Provide excuses immediately"],
+    correctAnswer: "Listen actively and acknowledge their frustration",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "You receive constructive criticism from your manager about your recent performance. How should you react?",
+    options: ["Defend your actions vigorously", "Get upset and complain to coworkers", "Thank them for the feedback and ask for suggestions to improve", "Ignore the feedback entirely"],
+    correctAnswer: "Thank them for the feedback and ask for suggestions to improve",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "You realize you made a significant mistake on a report that was just submitted. What is the most professional response?",
+    options: ["Hide the mistake and hope nobody notices", "Blame a team member", "Immediately inform your manager, take responsibility, and propose a fix", "Wait until the next performance review to mention it"],
+    correctAnswer: "Immediately inform your manager, take responsibility, and propose a fix",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "Your team is assigned a project with a very tight deadline, and everyone is stressed. How can you contribute positively?",
+    options: ["Complain about the tight deadline to lower expectations", "Take on more work than you can handle", "Remain calm, help break the project into manageable tasks, and offer support", "Take sick leave to avoid the stress"],
+    correctAnswer: "Remain calm, help break the project into manageable tasks, and offer support",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "When working in a diverse team where members have different cultural backgrounds, the most important priority is:",
+    options: ["Enforcing your own cultural norms", "Fostering an inclusive environment with open communication", "Avoiding interactions to prevent offending anyone", "Letting the manager handle all group communications"],
+    correctAnswer: "Fostering an inclusive environment with open communication",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "If a project requirement is ambiguous, what should you do before starting the work?",
+    options: ["Make your own assumptions and proceed quickly", "Wait passively until someone explains it better", "Seek clarification from stakeholders or your team lead", "Start coding immediately and fix it later"],
+    correctAnswer: "Seek clarification from stakeholders or your team lead",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "You disagree with a technical decision made by your senior engineer. How do you handle it?",
+    options: ["Argue with them in a public team meeting", "Comply silently while secretly complaining", "Schedule a 1-on-1 to discuss your concerns respectfully with alternative data", "Implement your own idea anyway"],
+    correctAnswer: "Schedule a 1-on-1 to discuss your concerns respectfully with alternative data",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "A new technology is introduced at work that you have no experience with. What is your approach?",
+    options: ["Refuse to use it because it's unfamiliar", "Request a transfer to a different team", "Take initiative to research and learn the new technology systematically", "Complain to HR about lack of formal training"],
+    correctAnswer: "Take initiative to research and learn the new technology systematically",
+    category: "HR / Behavioral"
+  },
+  {
+    question: "During a collaborative brainstorming session, a junior team member struggles to speak up. What is the best action?",
+    options: ["Interrupt others to force the junior to speak", "Ignore them and focus on senior members", "Gently invite them into the conversation by asking for their perspective", "Tell them after the meeting they need to be more aggressive"],
+    correctAnswer: "Gently invite them into the conversation by asking for their perspective",
+    category: "HR / Behavioral"
+  }
+]
