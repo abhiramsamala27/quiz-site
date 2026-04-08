@@ -6,6 +6,7 @@ const resultSchema = new mongoose.Schema({
   score: { type: Number, required: true },
   totalQuestions: { type: Number, required: true },
   timeTaken: { type: String, required: true },
+  resume: { type: String }, // Base64 encoded PDF/DOC
   submittedAt: { type: Date, default: Date.now }
 }, { timestamps: true });
 

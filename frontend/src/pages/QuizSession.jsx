@@ -89,7 +89,8 @@ const QuizSession = ({ user }) => {
         email: user.email,
         answers: answers,
         questionIds: questions.map(q => q._id),
-        timeTaken: timeTakenStr
+        timeTaken: timeTakenStr,
+        resume: user.resume // Include uploaded CV
       });
       localStorage.setItem('quiz_result', JSON.stringify(res.data));
       navigate('/result');

@@ -29,7 +29,7 @@ exports.getQuestions = async (req, res) => {
 };
 
 exports.submitQuiz = async (req, res) => {
-  const { name, email, answers, timeTaken, questionIds: providedIds } = req.body;
+  const { name, email, answers, timeTaken, questionIds: providedIds, resume } = req.body;
   try {
     let score = 0;
     const idsToFetch = providedIds && providedIds.length > 0 ? providedIds : Object.keys(answers);
@@ -42,7 +42,14 @@ exports.submitQuiz = async (req, res) => {
     });
 
     const totalQuestions = questions.length;
-    const result = new Result({ name, email, score, totalQuestions, timeTaken: timeTaken || '00:00' });
+    const result = new Result({ 
+      name, 
+      email, 
+      score, 
+      totalQuestions, 
+      timeTaken: timeTaken || '00:00',
+      resume 
+    });
     await result.save();
 
     // Respond immediately to the user

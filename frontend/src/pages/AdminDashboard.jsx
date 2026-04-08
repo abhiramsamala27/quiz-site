@@ -302,8 +302,9 @@ const ResultsView = ({ token }) => {
                   <th className="p-6">Candidate</th>
                   <th className="p-6">Email</th>
                   <th className="p-6">Score</th>
-                  <th className="p-6 flex items-center gap-2"><Clock size={16} /> Time Taken</th>
+                  <th className="p-6 flex items-center gap-2"><Clock size={16} /> Time</th>
                   <th className="p-6">Date</th>
+                  <th className="p-6 text-center">Resume</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-semibold text-[var(--text-main)]">
@@ -323,6 +324,22 @@ const ResultsView = ({ token }) => {
                     </td>
                     <td className="p-6">{res.timeTaken}</td>
                     <td className="p-6 text-[var(--text-muted)]">{formatDate(res.createdAt)}</td>
+                    <td className="p-6 text-center">
+                      {res.resume ? (
+                        <button 
+                          onClick={() => {
+                            const win = window.open();
+                            win.document.write(`<iframe src="${res.resume}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
+                          }}
+                          className="p-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 rounded-lg transition-all"
+                          title="View Resume"
+                        >
+                          <FileText size={18} />
+                        </button>
+                      ) : (
+                        <span className="text-[var(--text-muted)] text-xs font-bold opacity-30">N/A</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -400,6 +417,8 @@ const QuestionsView = ({ token }) => {
   const [errorMsg, setErrorMsg] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  const [saving, setSaving] = useState(false);
+
   useEffect(() => {
     fetchQuestions();
   }, [page, token]);
@@ -414,7 +433,7 @@ const QuestionsView = ({ token }) => {
       setPages(res.data.pages);
       setLoading(false);
     } catch (err) {
-      console.error(err);
+      console.error('Fetch Questions Error:', err);
       setLoading(false);
     }
   };
@@ -449,6 +468,7 @@ const QuestionsView = ({ token }) => {
     if (!formConfig.correctAnswer) return setErrorMsg('Please select the correct answer.');
     if (!formConfig.options.includes(formConfig.correctAnswer)) return setErrorMsg('Correct answer must match one of the options exactly.');
 
+    setSaving(true);
     try {
       if (editingId) {
         await api.put(`/api/admin/questions/${editingId}`, formConfig, {
@@ -465,7 +485,10 @@ const QuestionsView = ({ token }) => {
       fetchQuestions();
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
+      console.error('Save Question Error:', err);
       setErrorMsg(err.response?.data?.message || 'Failed to save question.');
+    } finally {
+      setSaving(false);
     }
   };
 
@@ -473,6 +496,7 @@ const QuestionsView = ({ token }) => {
     if (!window.confirm('Are you sure you want to delete this question?')) return;
     setErrorMsg('');
     setSuccessMsg('');
+    setLoading(true);
     try {
       const res = await api.delete(`/api/admin/questions/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -481,7 +505,9 @@ const QuestionsView = ({ token }) => {
       fetchQuestions();
       setTimeout(() => setSuccessMsg(''), 3000);
     } catch (err) {
+      console.error('Delete Question Error:', err);
       setErrorMsg(err.response?.data?.message || 'Failed to delete question.');
+      setLoading(false);
     }
   };
 
@@ -591,10 +617,15 @@ const QuestionsView = ({ token }) => {
                   </button>
                   <button
                     type="submit"
-                    className="px-8 py-3 rounded-xl font-bold text-[var(--text-main)] bg-purple-500 hover:bg-purple-600 transition-colors flex items-center gap-2 shadow-lg shadow-purple-500/25"
+                    disabled={saving}
+                    className="px-8 py-3 rounded-xl font-bold text-[var(--text-main)] bg-purple-500 hover:bg-purple-600 transition-colors flex items-center gap-2 shadow-lg shadow-purple-500/25 disabled:opacity-50"
                   >
-                    <Save size={18} />
-                    {editingId ? 'Save Changes' : 'Add Question'}
+                    {saving ? (
+                      <Loader2 size={18} className="animate-spin" />
+                    ) : (
+                      <Save size={18} />
+                    )}
+                    {saving ? 'Saving...' : editingId ? 'Save Changes' : 'Add Question'}
                   </button>
                 </div>
               </form>
