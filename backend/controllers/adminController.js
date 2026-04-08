@@ -1,5 +1,6 @@
 const Question = require('../models/Question');
 const Admin = require('../models/Admin');
+const Result = require('../models/Result');
 const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res) => {
@@ -60,8 +61,8 @@ exports.updateQuestion = async (req, res) => {
 exports.deleteQuestion = async (req, res) => {
   try {
     const count = await Question.countDocuments();
-    if (count <= 20) {
-      return res.status(400).json({ message: 'Cannot delete. Minimum 20 questions required for the quiz.' });
+    if (count <= 1) {
+      return res.status(400).json({ message: 'Cannot delete the last question. At least 1 question is required for the system.' });
     }
     await Question.findByIdAndDelete(req.params.id);
     res.json({ message: 'Question deleted' });
@@ -85,7 +86,6 @@ exports.getResults = async (req, res) => {
   }
 
   try {
-    const Result = require('../models/Result');
     const total = await Result.countDocuments(query);
     const results = await Result.find(query)
       .skip((page - 1) * limit)
@@ -157,7 +157,6 @@ exports.importQuestionsBulk = async (req, res) => {
 
 exports.getResultsAll = async (req, res) => {
   try {
-    const Result = require('../models/Result');
     const results = await Result.find().sort({ createdAt: -1 });
     res.json(results);
   } catch (err) {
@@ -167,7 +166,6 @@ exports.getResultsAll = async (req, res) => {
 
 exports.deleteAllResults = async (req, res) => {
   try {
-    const Result = require('../models/Result');
     await Result.deleteMany({});
     res.json({ message: 'All candidate records have been successfully cleared.' });
   } catch (err) {
@@ -176,3 +174,46 @@ exports.deleteAllResults = async (req, res) => {
 };
 
 
+exports.exportResults = async (req, res) => {
+  try {
+    const results = await Result.find().sort({ createdAt: -1 });
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'No results to export!' });
+    }
+
+    // Convert results to CSV format
+    const headers = ['Name', 'Email', 'Score', 'Total Questions', 'Time Taken', 'Completion Date'];
+    const csvRows = [headers.join(',')];
+
+    results.forEach(r => {
+      const row = [
+        `"${r.name.replace(/"/g, '""')}"`,
+        `"${r.email.replace(/"/g, '""')}"`,
+        r.score,
+        r.totalQuestions,
+        `"${r.timeTaken}"`,
+        `"${new Date(r.createdAt).toLocaleString()}"`
+      ];
+      csvRows.push(row.join(','));
+    });
+
+    const csvContent = csvRows.join('\n');
+
+    // Set headers for file download
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=quiz_results_${Date.now()}.csv`);
+    res.status(200).send(csvContent);
+
+  } catch (err) {
+    res.status(500).json({ message: 'Export failed: ' + err.message });
+  }
+};
+
+exports.deleteAllQuestions = async (req, res) => {
+  try {
+    await Question.deleteMany({});
+    res.json({ message: 'All questions have been cleared from the bank.' });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

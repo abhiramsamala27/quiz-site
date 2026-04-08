@@ -11,6 +11,7 @@ const QuizSession = ({ user }) => {
   const [submitting, setSubmitting] = useState(false);
   const [timeLeft, setTimeLeft] = useState(300); // 5 minutes in seconds
   const timerRef = useRef(null);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const QuizSession = ({ user }) => {
         setLoading(false);
       } catch (err) {
         console.error(err);
+        setError(err.response?.data?.message || 'Could not reach the high-speed server. Please try again later.');
         setLoading(false);
       }
     };
@@ -86,12 +88,14 @@ const QuizSession = ({ user }) => {
         name: user.name,
         email: user.email,
         answers: answers,
+        questionIds: questions.map(q => q._id),
         timeTaken: timeTakenStr
       });
       localStorage.setItem('quiz_result', JSON.stringify(res.data));
       navigate('/result');
     } catch (err) {
       console.error(err);
+      setError('Submission failed. Your internet might be unstable. Please try again.');
       setSubmitting(false);
     }
   };
@@ -107,7 +111,7 @@ const QuizSession = ({ user }) => {
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center">
       <AlertCircle size={48} className="text-[var(--text-muted)] mb-4" />
       <h2 className="text-2xl font-black text-[var(--text-main)]">Failed to load questions</h2>
-      <p className="text-[var(--text-muted)] max-w-sm mt-3 font-medium">Could not reach the high-speed server. Please try again later.</p>
+      <p className="text-[var(--text-muted)] max-w-sm mt-3 font-medium">{error || 'Could not reach the high-speed server. Please try again later.'}</p>
     </div>
   );
 
@@ -185,6 +189,13 @@ const QuizSession = ({ user }) => {
             </div>
           ))}
         </div>
+        
+        {error && (
+          <div className="p-4 bg-red-50 border-t border-red-100 flex items-center gap-3 text-red-600">
+            <AlertCircle size={20} />
+            <p className="font-semibold text-sm">{error}</p>
+          </div>
+        )}
 
         {/* Footer Actions */}
         <footer className="bg-[var(--footer-bg)] p-4 md:p-8 flex flex-col md:flex-row justify-center gap-3 md:gap-4 w-full">

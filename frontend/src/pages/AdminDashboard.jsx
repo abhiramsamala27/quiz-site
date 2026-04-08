@@ -22,6 +22,21 @@ const AdminDashboard = ({ onLogout }) => {
     }
   }, [token, navigate]);
 
+  const handleSystemReset = async () => {
+    try {
+      // Clear Results
+      await api.delete('/api/admin/results', { headers: { Authorization: `Bearer ${token}` } });
+      // Clear Questions
+      await api.delete('/api/admin/questions/all', { headers: { Authorization: `Bearer ${token}` } });
+      
+      alert('System successfully reset to factory state.');
+      window.location.reload();
+    } catch (err) {
+      console.error(err);
+      alert('Failed to perform full system reset.');
+    }
+  };
+
   return (
     <div className="pb-24 lg:py-10">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -89,6 +104,13 @@ const AdminDashboard = ({ onLogout }) => {
                     >
                       <DownloadCloud size={16} />
                       Export Tools
+                    </button>
+                    <button
+                      onClick={() => { if(window.confirm('⚠️ CRITICAL: This will delete ALL questions and ALL results. Proceed?')) { handleSystemReset(); } }}
+                      className="w-full flex items-center gap-3 p-3 rounded-xl font-bold transition-all text-sm text-red-400 hover:bg-red-500/10"
+                    >
+                      <Trash2 size={16} />
+                      System Reset
                     </button>
                   </motion.div>
                 )}
@@ -199,7 +221,12 @@ const ResultsView = ({ token }) => {
       alert('All results have been cleared.');
     } catch (err) {
       console.error(err);
-      alert('Failed to clear results.');
+      if (err.response?.status === 401) {
+        alert('Session expired. Please log in again.');
+        onLogout();
+      } else {
+        alert('Failed to clear results.');
+      }
     }
   };
 
@@ -726,20 +753,58 @@ const BulkImportView = ({ token }) => {
     const reader = new FileReader();
     reader.onload = (event) => {
       const text = event.target.result;
-      const lines = text.split('\n').filter(line => line.trim() !== '');
-      const headers = lines[0].split(',');
+      const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+      if (lines.length < 2) return setError('CSV file is empty or missing data rows.');
 
-      const parsed = lines.slice(1).map(line => {
-        const values = line.split(',');
-        return {
-          question: values[0],
-          options: [values[1], values[2], values[3], values[4]],
-          correctAnswer: values[5]?.trim()
+      const headers = lines[0].toLowerCase().split(',').map(h => h.trim());
+      const hasAnswer = headers.includes('answer') || headers.includes('correctanswer');
+      
+      if (!hasAnswer) {
+        return setError('Invalid CSV format. Header must include "answer" or "correctAnswer".');
+      }
+
+      const parsed = [];
+      const errors = [];
+
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i];
+        const values = line.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || line.split(',');
+        const cleanValues = values.map(v => v.replace(/^"|"$/g, '').trim());
+
+        if (cleanValues.length < 6) {
+          errors.push(`Row ${i + 1}: Missing columns (Expected at least 6).`);
+          continue;
+        }
+
+        const questionObj = {
+          question: cleanValues[0],
+          options: [cleanValues[1], cleanValues[2], cleanValues[3], cleanValues[4]],
+          correctAnswer: cleanValues[5],
+          category: 'General'
         };
-      });
 
-      setFileData(parsed);
-      setError('');
+        // Strict Validation
+        if (!questionObj.question) errors.push(`Row ${i + 1}: Question text is empty.`);
+        else if (questionObj.options.some(opt => !opt)) errors.push(`Row ${i + 1}: One or more options are empty.`);
+        else if (!questionObj.correctAnswer) errors.push(`Row ${i + 1}: Correct answer is empty.`);
+        else if (!questionObj.options.includes(questionObj.correctAnswer)) {
+          errors.push(`Row ${i + 1}: Correct answer "${questionObj.correctAnswer}" must match one of the options exactly.`);
+        } else {
+          parsed.push(questionObj);
+        }
+      }
+
+      if (errors.length > 0) {
+        setError(errors.slice(0, 3).join(' | ') + (errors.length > 3 ? ` ...and ${errors.length - 3} more errors.` : ''));
+        setFileData(null);
+      } else if (parsed.length === 0) {
+        setError('No valid questions found to import.');
+        setFileData(null);
+      } else {
+        setFileData(parsed);
+        setError('');
+        setSuccess('');
+      }
     };
     reader.readAsText(file);
   };
@@ -813,31 +878,23 @@ const ExportView = ({ token }) => {
   const handleExport = async () => {
     setLoading(true);
     try {
-      const baseURL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
-      const res = await axios.get(`${baseURL}/api/admin/results/all`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await api.get('/api/admin/export-results', {
+        headers: { Authorization: `Bearer ${token}` },
+        responseType: 'blob' // Essential for binary/file data
       });
 
-      const results = res.data;
-      if (results.length === 0) {
-        alert("No results to export!");
-        return;
-      }
-
-      const headers = "Name,Email,Score,Total,Time Taken,Date\n";
-      const rows = results.map(r =>
-        `"${r.name}","${r.email}",${r.score},${r.totalQuestions},"${r.timeTaken}","${new Date(r.createdAt).toLocaleString()}"`
-      ).join("\n");
-
-      const blob = new Blob([headers + rows], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `quiz_results_${new Date().toISOString().split('T')[0]}.csv`;
-      a.click();
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `quiz_results_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error(err);
-      alert("Failed to export results.");
+      console.error('Export Error:', err);
+      const errorMsg = err.response?.data?.message || 'The server failed to generate your export. Please ensure there is data to download.';
+      alert(`Export Failed: ${errorMsg}`);
     } finally {
       setLoading(false);
     }

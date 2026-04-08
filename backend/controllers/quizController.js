@@ -2,11 +2,19 @@ const Question = require('../models/Question');
 const Result = require('../models/Result');
 const nodemailer = require('nodemailer');
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS
+  }
+});
+
 exports.getQuestions = async (req, res) => {
   try {
     const questions = await Question.aggregate([{ $sample: { size: 20 } }]);
-    if (questions.length < 20) {
-      return res.status(400).json({ message: 'Not enough questions in the database (min 20 required).' });
+    if (questions.length === 0) {
+      return res.status(404).json({ message: 'No questions found in the database. Please contact the administrator.' });
     }
     // Remove correct answers before sending to client for security
     const sanitizedQuestions = questions.map(q => ({
@@ -21,14 +29,14 @@ exports.getQuestions = async (req, res) => {
 };
 
 exports.submitQuiz = async (req, res) => {
-  const { name, email, answers, timeTaken } = req.body;
+  const { name, email, answers, timeTaken, questionIds: providedIds } = req.body;
   try {
     let score = 0;
-    const questionIds = Object.keys(answers);
-    const questions = await Question.find({ _id: { $in: questionIds } });
+    const idsToFetch = providedIds && providedIds.length > 0 ? providedIds : Object.keys(answers);
+    const questions = await Question.find({ _id: { $in: idsToFetch } });
 
     questions.forEach(q => {
-      if (answers[q._id] === q.correctAnswer) {
+      if (answers[q._id.toString()] === q.correctAnswer) {
         score++;
       }
     });
@@ -37,24 +45,19 @@ exports.submitQuiz = async (req, res) => {
     const result = new Result({ name, email, score, totalQuestions, timeTaken: timeTaken || '00:00' });
     await result.save();
 
-    // Send Email
-    await sendResultEmail(name, email, score, totalQuestions);
-
+    // Respond immediately to the user
     res.json({ score, totalQuestions });
+
+    // Send Email in the background (no await)
+    sendResultEmail(name, email, score, totalQuestions).catch(err => {
+      console.error('Background email error:', err.message);
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
 async function sendResultEmail(name, email, score, total) {
-  const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS
-    }
-  });
-
   const mailOptions = {
     from: `"PrepMock ⚡" <${process.env.EMAIL_USER}>`,
     to: email,
