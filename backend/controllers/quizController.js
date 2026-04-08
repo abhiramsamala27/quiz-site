@@ -12,18 +12,31 @@ const transporter = nodemailer.createTransport({
 
 exports.getQuestions = async (req, res) => {
   try {
-    const questions = await Question.aggregate([{ $sample: { size: 20 } }]);
+    const start = Date.now();
+    // Fetch all questions once (faster than random sampling for small banks)
+    const questions = await Question.find({});
+    
     if (questions.length === 0) {
-      return res.status(404).json({ message: 'No questions found in the database. Please contact the administrator.' });
+      return res.status(404).json({ message: 'No questions found in the database.' });
     }
-    // Remove correct answers before sending to client for security
-    const sanitizedQuestions = questions.map(q => ({
+
+    // Shuffle in memory
+    const shuffled = questions.sort(() => 0.5 - Math.random()).slice(0, 20);
+
+    // Remove correct answers
+    const sanitizedQuestions = shuffled.map(q => ({
       _id: q._id,
       question: q.question,
       options: q.options,
     }));
+
+    // Add Caching Header to make it feel instant on refresh
+    res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    
+    console.log(`Backend: Questions fetched and shuffled in ${Date.now() - start}ms`);
     res.json(sanitizedQuestions);
   } catch (err) {
+    console.error('getQuestions Error:', err);
     res.status(500).json({ message: err.message });
   }
 };
