@@ -3,7 +3,9 @@ const Result = require('../models/Result');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // Use SSL
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -42,7 +44,7 @@ exports.getQuestions = async (req, res) => {
 };
 
 exports.submitQuiz = async (req, res) => {
-  const { name, email, answers, timeTaken, questionIds: providedIds, resume } = req.body;
+  const { name, email, answers, timeTaken, questionIds: providedIds } = req.body;
   try {
     let score = 0;
     const idsToFetch = providedIds && providedIds.length > 0 ? providedIds : Object.keys(answers);
@@ -60,18 +62,20 @@ exports.submitQuiz = async (req, res) => {
       email, 
       score, 
       totalQuestions, 
-      timeTaken: timeTaken || '00:00',
-      resume 
+      timeTaken: timeTaken || '00:00'
     });
     await result.save();
 
-    // Respond immediately to the user
-    res.json({ score, totalQuestions });
+    // Send Email (Awaiting for reliability during presentation)
+    try {
+      await sendResultEmail(name, email, score, totalQuestions);
+    } catch (mailErr) {
+      console.error('Mail sending failed:', mailErr.message);
+      // We don't fail the quiz submission if mail fails, but we log it.
+    }
 
-    // Send Email in the background (no await)
-    sendResultEmail(name, email, score, totalQuestions).catch(err => {
-      console.error('Background email error:', err.message);
-    });
+    // Respond to user
+    res.json({ score, totalQuestions });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
