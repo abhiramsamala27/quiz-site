@@ -13,7 +13,6 @@ router.get('/results', auth, adminController.getResults);
 router.get('/results/all', auth, adminController.getResultsAll);
 router.delete('/results', auth, adminController.deleteAllResults);
 router.get('/export-results', auth, adminController.exportResults);
-router.delete('/questions/all', auth, adminController.deleteAllQuestions);
 router.post('/questions/bulk', auth, adminController.importQuestionsBulk);
 
 module.exports = router;

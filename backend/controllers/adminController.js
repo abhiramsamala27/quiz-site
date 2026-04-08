@@ -208,12 +208,3 @@ exports.exportResults = async (req, res) => {
     res.status(500).json({ message: 'Export failed: ' + err.message });
   }
 };
-
-exports.deleteAllQuestions = async (req, res) => {
-  try {
-    await Question.deleteMany({});
-    res.json({ message: 'All questions have been cleared from the bank.' });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};

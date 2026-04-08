@@ -22,21 +22,6 @@ const AdminDashboard = ({ onLogout }) => {
     }
   }, [token, navigate]);
 
-  const handleSystemReset = async () => {
-    try {
-      // Clear Results
-      await api.delete('/api/admin/results', { headers: { Authorization: `Bearer ${token}` } });
-      // Clear Questions
-      await api.delete('/api/admin/questions/all', { headers: { Authorization: `Bearer ${token}` } });
-      
-      alert('System successfully reset to factory state.');
-      window.location.reload();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to perform full system reset.');
-    }
-  };
-
   return (
     <div className="pb-24 lg:py-10">
       <div className="flex flex-col lg:flex-row gap-8">
@@ -104,13 +89,6 @@ const AdminDashboard = ({ onLogout }) => {
                     >
                       <DownloadCloud size={16} />
                       Export Tools
-                    </button>
-                    <button
-                      onClick={() => { if(window.confirm('⚠️ CRITICAL: This will delete ALL questions and ALL results. Proceed?')) { handleSystemReset(); } }}
-                      className="w-full flex items-center gap-3 p-3 rounded-xl font-bold transition-all text-sm text-red-400 hover:bg-red-500/10"
-                    >
-                      <Trash2 size={16} />
-                      System Reset
                     </button>
                   </motion.div>
                 )}
