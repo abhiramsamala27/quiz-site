@@ -304,7 +304,6 @@ const ResultsView = ({ token }) => {
                   <th className="p-6">Score</th>
                   <th className="p-6 flex items-center gap-2"><Clock size={16} /> Time</th>
                   <th className="p-6">Date</th>
-                  <th className="p-6 text-center">Resume</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-semibold text-[var(--text-main)]">
@@ -316,30 +315,14 @@ const ResultsView = ({ token }) => {
                       <div className="flex items-center gap-2">
                         <span className={`px-3 py-1 rounded-full text-xs font-black ${res.score / res.totalQuestions >= 0.8 ? 'bg-green-500/20 text-green-400' :
                             res.score / res.totalQuestions >= 0.5 ? 'bg-yellow-500/20 text-yellow-400' :
-                              'bg-red-500/20 text-red-400'
-                          }`}>
+                               'bg-red-500/20 text-red-400'
+                           }`}>
                           {res.score} / {res.totalQuestions}
                         </span>
                       </div>
                     </td>
                     <td className="p-6">{res.timeTaken}</td>
                     <td className="p-6 text-[var(--text-muted)]">{formatDate(res.createdAt)}</td>
-                    <td className="p-6 text-center">
-                      {res.resume ? (
-                        <button 
-                          onClick={() => {
-                            const win = window.open();
-                            win.document.write(`<iframe src="${res.resume}" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>`);
-                          }}
-                          className="p-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 rounded-lg transition-all"
-                          title="View Resume"
-                        >
-                          <FileText size={18} />
-                        </button>
-                      ) : (
-                        <span className="text-[var(--text-muted)] text-xs font-bold opacity-30">N/A</span>
-                      )}
-                    </td>
                   </tr>
                 ))}
               </tbody>

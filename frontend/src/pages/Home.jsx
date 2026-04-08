@@ -4,26 +4,10 @@ import { motion } from 'framer-motion';
 import { User, Mail, Zap, ShieldCheck } from 'lucide-react';
 
 const Home = ({ onStart }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', resume: '' });
+  const [formData, setFormData] = useState({ name: '', email: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    if (file.size > 2 * 1024 * 1024) {
-      setError('File size too large. Please upload a resume under 2MB.');
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData({ ...formData, resume: reader.result });
-    };
-    reader.readAsDataURL(file);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -84,22 +68,6 @@ const Home = ({ onStart }) => {
                   onChange={e => setFormData({ ...formData, email: e.target.value })}
                   required
                 />
-              </div>
-            </div>
-
-            <div className="space-y-1.5 md:space-y-2">
-              <label className="text-xs md:text-sm font-bold text-[var(--text-muted)] ml-1">Upload CV (Optional)</label>
-              <div className="relative">
-                <ShieldCheck size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-                <input 
-                  type="file" 
-                  accept=".pdf,.doc,.docx"
-                  onChange={handleFileChange}
-                  className="w-full glass-input rounded-2xl py-4 pl-12 pr-6 outline-none text-[var(--text-main)] text-sm transition-all focus:bg-white/10 file:hidden cursor-pointer"
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[10px] uppercase font-black text-indigo-400">
-                  {formData.resume ? '✓ READY' : 'PDF/DOC'}
-                </span>
               </div>
             </div>
 
