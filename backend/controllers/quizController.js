@@ -3,9 +3,7 @@ const Result = require('../models/Result');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true, // Use SSL
+  service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -66,13 +64,10 @@ exports.submitQuiz = async (req, res) => {
     });
     await result.save();
 
-    // Send Email (Awaiting for reliability during presentation)
-    try {
-      await sendResultEmail(name, email, score, totalQuestions);
-    } catch (mailErr) {
-      console.error('Mail sending failed:', mailErr.message);
-      // We don't fail the quiz submission if mail fails, but we log it.
-    }
+    // Send Email (Background to prevent lag)
+    sendResultEmail(name, email, score, totalQuestions).catch(err => {
+      console.error('Mail sending failed:', err.message);
+    });
 
     // Respond to user
     res.json({ score, totalQuestions });
