@@ -20,8 +20,8 @@ exports.getQuestions = async (req, res) => {
       return res.status(404).json({ message: 'No questions found in the database.' });
     }
 
-    // Shuffle in memory
-    const shuffled = questions.sort(() => 0.5 - Math.random()).slice(0, 20);
+    // Shuffle in memory and pick 10
+    const shuffled = questions.sort(() => 0.5 - Math.random()).slice(0, 10);
 
     // Remove correct answers
     const sanitizedQuestions = shuffled.map(q => ({
