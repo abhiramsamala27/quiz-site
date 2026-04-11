@@ -3,10 +3,21 @@ const Result = require('../models/Result');
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
+  }
+});
+
+// Verify SMTP connection on startup
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('❌ Mail Transporter Error:', error.message);
+  } else {
+    console.log('✅ Mail Transporter is ready to send emails');
   }
 });
 
