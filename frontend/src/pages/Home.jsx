@@ -32,9 +32,6 @@ const Home = ({ onStart }) => {
         <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl"></div>
         
         <div className="relative z-10 text-center">
-          <div className="bg-indigo-500/10 p-4 rounded-3xl w-16 h-16 flex items-center justify-center mx-auto mb-6">
-            <Zap size={32} className="text-indigo-400 fill-indigo-400/20" />
-          </div>
 
           <h1 className="text-xl md:text-3xl font-black mb-6 md:mb-8 tracking-tight text-[var(--text-main)]">
             Mock Assessment
@@ -78,7 +75,7 @@ const Home = ({ onStart }) => {
               disabled={loading}
               className="w-full gradient-btn rounded-xl md:rounded-2xl py-3 md:py-4 text-base md:text-lg font-bold flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/25 min-h-[44px] disabled:opacity-50"
             >
-              {loading ? 'Processing...' : 'Begin Now 🚀'}
+              {loading ? 'Processing...' : 'Begin Now'}
             </button>
           </form>
 

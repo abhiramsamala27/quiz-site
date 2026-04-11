@@ -110,17 +110,28 @@ exports.getResults = async (req, res) => {
           ],
           qualified: [
             {
+              $project: {
+                email: 1,
+                score: 1,
+                totalQuestions: 1,
+                ratio: {
+                  $cond: [
+                    { $gt: ["$totalQuestions", 0] },
+                    { $divide: ["$score", "$totalQuestions"] },
+                    0
+                  ]
+                }
+              }
+            },
+            {
               $group: {
                 _id: "$email",
-                bestScore: { $max: "$score" },
-                totalQ: { $first: "$totalQuestions" }
+                bestRatio: { $max: "$ratio" }
               }
             },
             {
               $match: {
-                $expr: {
-                  $gte: [{ $divide: ["$bestScore", "$totalQ"] }, 0.7]
-                }
+                bestRatio: { $gte: 0.7 }
               }
             },
             { $count: "count" }
@@ -130,14 +141,15 @@ exports.getResults = async (req, res) => {
     ]);
 
     const stats = {
-      totalAttempts: allStats[0].metrics[0]?.totalAttempts || 0,
-      totalCandidates: allStats[0].candidates[0]?.count || 0,
-      qualifiedCandidates: allStats[0].qualified[0]?.count || 0,
-      highestScore: allStats[0].metrics[0]?.highestScore || 0
+      totalAttempts: allStats[0]?.metrics[0]?.totalAttempts || 0,
+      totalCandidates: allStats[0]?.candidates[0]?.count || 0,
+      qualifiedCandidates: allStats[0]?.qualified[0]?.count || 0,
+      highestScore: allStats[0]?.metrics[0]?.highestScore || 0
     };
 
     res.json({ total, results, page, pages: Math.ceil(total / limit), stats });
   } catch (err) {
+    console.error('getResults Error:', err);
     res.status(500).json({ message: err.message });
   }
 };

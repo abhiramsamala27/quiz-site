@@ -42,11 +42,15 @@ exports.getQuestions = async (req, res) => {
 };
 
 exports.submitQuiz = async (req, res) => {
-  const { name, email, answers, timeTaken, questionIds: providedIds } = req.body;
+  const { name, email, answers, timeTaken, questionIds: providedIds, resume } = req.body;
+  console.log(`Backend: Submission received from ${email} (${name})`);
+  
   try {
     let score = 0;
     const idsToFetch = providedIds && providedIds.length > 0 ? providedIds : Object.keys(answers);
     const questions = await Question.find({ _id: { $in: idsToFetch } });
+
+    console.log(`Backend: Found ${questions.length} questions for grading`);
 
     questions.forEach(q => {
       if (answers[q._id.toString()] === q.correctAnswer) {
@@ -55,14 +59,22 @@ exports.submitQuiz = async (req, res) => {
     });
 
     const totalQuestions = questions.length;
+    
+    if (totalQuestions === 0) {
+      console.warn('Backend Warning: totalQuestions is 0. Check questionIds or Database.');
+    }
+
     const result = new Result({ 
       name, 
       email, 
       score, 
       totalQuestions, 
-      timeTaken: timeTaken || '00:00'
+      timeTaken: timeTaken || '00:00',
+      resume: resume || null
     });
+    
     await result.save();
+    console.log(`✅ Backend: Result saved for ${email}. Score: ${score}/${totalQuestions}`);
 
     // Send Email (Background to prevent lag)
     sendResultEmail(name, email, score, totalQuestions).catch(err => {
@@ -72,6 +84,7 @@ exports.submitQuiz = async (req, res) => {
     // Respond to user
     res.json({ score, totalQuestions });
   } catch (err) {
+    console.error('submitQuiz Error:', err.message);
     res.status(500).json({ message: err.message });
   }
 };

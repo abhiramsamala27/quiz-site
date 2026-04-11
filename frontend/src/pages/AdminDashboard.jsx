@@ -165,6 +165,7 @@ const ResultsView = ({ token }) => {
   const [pages, setPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -183,8 +184,10 @@ const ResultsView = ({ token }) => {
       setStats(res.data.stats);
       setPages(res.data.pages);
       setLoading(false);
+      setError(null);
     } catch (err) {
       console.error(err);
+      setError(err.response?.data?.message || 'Failed to connect to the recording server. Please check your connection.');
       setLoading(false);
     }
   };
@@ -283,6 +286,13 @@ const ResultsView = ({ token }) => {
           </div>
         </div>
 
+        {error && (
+          <div className="m-4 md:m-8 p-4 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center gap-3 text-red-500 font-bold text-sm">
+            <AlertTriangle size={18} />
+            {error}
+          </div>
+        )}
+
         {/* Table - Desktop only */}
         <div className="hidden md:block overflow-x-auto">
           {loading ? (
@@ -301,9 +311,10 @@ const ResultsView = ({ token }) => {
                 <tr className="bg-white/5 uppercase text-xs tracking-widest text-[var(--text-muted)] font-black">
                   <th className="p-6">Candidate</th>
                   <th className="p-6">Email</th>
-                  <th className="p-6">Score</th>
-                  <th className="p-6 flex items-center gap-2"><Clock size={16} /> Time</th>
+                  <th className="p-6 text-center">Score</th>
+                  <th className="p-6 flex items-center justify-center gap-2"><Clock size={16} /> Time</th>
                   <th className="p-6">Date</th>
+                  <th className="p-6 text-right">CV</th>
                 </tr>
               </thead>
               <tbody className="text-sm font-semibold text-[var(--text-main)]">
@@ -321,8 +332,23 @@ const ResultsView = ({ token }) => {
                         </span>
                       </div>
                     </td>
-                    <td className="p-6">{res.timeTaken}</td>
-                    <td className="p-6 text-[var(--text-muted)]">{formatDate(res.createdAt)}</td>
+                    <td className="p-6 text-[var(--text-muted)] text-center">{res.timeTaken}</td>
+                    <td className="p-6 text-[var(--text-muted)] whitespace-nowrap">{formatDate(res.createdAt)}</td>
+                    <td className="p-6 text-right">
+                      {res.resume ? (
+                        <a 
+                          href={res.resume} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 rounded-lg text-xs font-bold transition-all inline-flex items-center gap-1.5"
+                        >
+                          <FileText size={14} />
+                          View
+                        </a>
+                      ) : (
+                        <span className="text-xs text-[var(--text-muted)] opacity-50 italic">None</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -350,6 +376,19 @@ const ResultsView = ({ token }) => {
                 <span className="flex items-center gap-1"><Clock size={10} /> {res.timeTaken}</span>
                 <span>{formatDate(res.createdAt)}</span>
               </div>
+              {res.resume && (
+                <div className="pt-2">
+                  <a 
+                    href={res.resume} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="w-full py-2 bg-indigo-500/10 text-indigo-400 rounded-xl text-[10px] font-black flex items-center justify-center gap-2"
+                  >
+                    <FileText size={12} />
+                    VIEW CANDIDATE RESUME
+                  </a>
+                </div>
+              )}
             </div>
           ))}
         </div>
