@@ -125,8 +125,9 @@ async function sendResultEmail(name, email, score, total) {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
+    const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email sent successfully:', info.response);
   } catch (err) {
-    console.error('Error sending email:', err.message);
+    console.error('❌ Error sending email:', err.message);
   }
 }
