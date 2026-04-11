@@ -11,20 +11,32 @@ async function sendResultEmail(name, email, score, total) {
   }
 
   const data = JSON.stringify({
-    from: 'PrepMock <onboarding@resend.dev>', // Resend's default sender for unverified domains
+    from: 'PrepMock <onboarding@resend.dev>',
     to: [email],
-    subject: 'Your Mock Assessment Performance - PrepMock ⚡',
+    subject: `Assessment Performance Report - ${name}`,
     html: `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
-        <h2 style="color: #6366f1;">Hello ${name},</h2>
-        <p>Congratulations on completing your mock assessment! Here is your performance breakdown:</p>
-        <div style="background: #f4f7ff; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0;">
-          <h1 style="font-size: 3rem; margin: 0; color: #4f46e5;">${score} / ${total}</h1>
-          <p style="color: #666;">Total Score</p>
+      <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; padding: 40px; border: 1px solid #e2e8f0; border-radius: 12px; color: #1e293b;">
+        <h2 style="color: #4f46e5; margin-bottom: 24px;">Assessment Performance Report</h2>
+        <p>Dear ${name},</p>
+        <p>Thank you for completing the mock assessment. Your performance has been evaluated, and the results are detailed below:</p>
+        
+        <div style="background-color: #f8fafc; padding: 32px; border-radius: 8px; text-align: center; margin: 32px 0; border: 1px solid #f1f5f9;">
+          <p style="margin: 0; font-size: 14px; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700;">Final Score</p>
+          <h1 style="font-size: 48px; margin: 8px 0; color: #0f172a;">${score} / ${total}</h1>
+          <p style="margin: 0; font-size: 16px; color: #475569; font-weight: 600;">Overall Achievement: ${Math.round((score / total) * 100)}%</p>
         </div>
-        <p>Your performance was ${score / total >= 0.8 ? 'Excellent! 🌟' : score / total >= 0.5 ? 'Good! 👍' : 'Keep practicing! 💪'}</p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        <p style="font-size: 0.8rem; color: #999;">This is an automated result email from PrepMock ⚡. Thank you for participating!</p>
+
+        <p style="margin-bottom: 8px;"><b>Performance Evaluation:</b></p>
+        <p style="margin-top: 0; color: #475569;">
+          ${score / total >= 0.8 ? 'Your performance was exceptional, demonstrating a strong command of the assessment criteria.' : 
+            score / total >= 0.5 ? 'Your performance was satisfactory, showing a good understanding of the core concepts with room for further refinement.' : 
+            'The results indicate a need for further study and practice to strengthen your understanding of the foundational concepts.'}
+        </p>
+
+        <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 40px 0;">
+        <p style="font-size: 12px; color: #94a3b8; text-align: center;">
+          This is an automated notification from the PrepMock Assessment System. Please do not reply to this email.
+        </p>
       </div>
     `
   });
