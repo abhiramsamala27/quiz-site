@@ -35,9 +35,6 @@ const ResultPage = ({ user }) => {
         animate={{ scale: 1, opacity: 1 }}
         className="glass-card p-5 md:p-16 rounded-[1.5rem] md:rounded-[4rem] text-center max-w-4xl w-full border-[var(--card-border)] relative shadow-2xl"
       >
-        <div className="absolute -top-12 left-1/2 -translate-x-1/2 p-6 bg-gradient-to-br from-purple-600 to-blue-500 rounded-3xl shadow-2xl">
-          <Trophy size={48} className="text-white fill-white/10" />
-        </div>
 
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
@@ -109,10 +106,6 @@ const ResultPage = ({ user }) => {
         </div>
       </motion.div>
 
-      <div className="mt-12 flex items-center gap-3 text-[var(--text-muted)] font-bold text-sm tracking-widest uppercase">
-        <Sparkles size={20} className="text-yellow-500" />
-        Assessment Validated via Secure Channel
-      </div>
     </div>
 
   );
