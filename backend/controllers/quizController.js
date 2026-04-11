@@ -2,19 +2,19 @@ const Question = require('../models/Question');
 const Result = require('../models/Result');
 const https = require('https');
 
-// Helper to send email via Resend API (Railway-safe)
+// Helper to send email via Brevo API (Railway-safe + Works without domain)
 async function sendResultEmail(name, email, score, total) {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = process.env.BREVO_API_KEY;
   if (!apiKey) {
-    console.error('❌ Error: RESEND_API_KEY is missing in environment variables.');
+    console.error('❌ Error: BREVO_API_KEY is missing.');
     return;
   }
 
   const data = JSON.stringify({
-    from: 'PrepMock <onboarding@resend.dev>',
-    to: [email],
+    sender: { name: 'PrepMock', email: 'abhiramsamala27@gmail.com' },
+    to: [{ email: email, name: name }],
     subject: `Assessment Performance Report - ${name}`,
-    html: `
+    htmlContent: `
       <div style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; max-width: 600px; margin: auto; padding: 40px; border: 1px solid #e2e8f0; border-radius: 12px; color: #1e293b;">
         <h2 style="color: #4f46e5; margin-bottom: 24px;">Assessment Performance Report</h2>
         <p>Dear ${name},</p>
@@ -42,13 +42,13 @@ async function sendResultEmail(name, email, score, total) {
   });
 
   const options = {
-    hostname: 'api.resend.com',
+    hostname: 'api.brevo.com',
     port: 443,
-    path: '/emails',
+    path: '/v3/smtp/email',
     method: 'POST',
     headers: {
+      'api-key': apiKey,
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`,
       'Content-Length': Buffer.byteLength(data)
     }
   };
@@ -57,16 +57,16 @@ async function sendResultEmail(name, email, score, total) {
     let responseData = '';
     res.on('data', (chunk) => { responseData += chunk; });
     res.on('end', () => {
-      if (res.statusCode === 200 || res.statusCode === 201) {
-        console.log('✅ Email sent successfully via Resend API');
+      if (res.statusCode === 201 || res.statusCode === 200) {
+        console.log(`✅ Email sent to ${email} successfully via Brevo`);
       } else {
-        console.error('❌ Resend API Error:', responseData);
+        console.error('❌ Brevo API Error:', responseData);
       }
     });
   });
 
-  req.on('error', (error) => {
-    console.error('❌ HTTPS Request Error:', error.message);
+  req.on('error', (err) => {
+    console.error('❌ HTTPS Error:', err.message);
   });
 
   req.write(data);
@@ -75,12 +75,8 @@ async function sendResultEmail(name, email, score, total) {
 
 exports.getQuestions = async (req, res) => {
   try {
-    const start = Date.now();
     const questions = await Question.find({});
-    
-    if (questions.length === 0) {
-      return res.status(404).json({ message: 'No questions found in the database.' });
-    }
+    if (questions.length === 0) return res.status(404).json({ message: 'No questions found.' });
 
     const shuffled = questions.sort(() => 0.5 - Math.random()).slice(0, 10);
     const sanitizedQuestions = shuffled.map(q => ({
@@ -92,7 +88,6 @@ exports.getQuestions = async (req, res) => {
     res.setHeader('Cache-Control', 'private, no-cache, no-store, must-revalidate');
     res.json(sanitizedQuestions);
   } catch (err) {
-    console.error('getQuestions Error:', err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -106,13 +101,10 @@ exports.submitQuiz = async (req, res) => {
     const questions = await Question.find({ _id: { $in: idsToFetch } });
 
     questions.forEach(q => {
-      if (answers[q._id.toString()] === q.correctAnswer) {
-        score++;
-      }
+      if (answers[q._id.toString()] === q.correctAnswer) score++;
     });
 
     const totalQuestions = questions.length;
-    
     const result = new Result({ 
       name, 
       email, 
@@ -123,13 +115,13 @@ exports.submitQuiz = async (req, res) => {
     });
     
     await result.save();
-    console.log(`✅ Result saved. Score: ${score}/${totalQuestions}`);
+    console.log(`✅ Result saved for ${email}. Score: ${score}/${totalQuestions}`);
 
+    // Send the email
     sendResultEmail(name, email, score, totalQuestions);
 
     res.json({ score, totalQuestions });
   } catch (err) {
-    console.error('submitQuiz Error:', err.message);
     res.status(500).json({ message: err.message });
   }
 };
