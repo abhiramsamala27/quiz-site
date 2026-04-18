@@ -1,0 +1,46 @@
+services:
+  # Backend Node.js Service
+  - type: web
+    name: quiz-site-backend
+    env: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18.0.0
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false # Set this in Render Dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: BACKEND_URL
+        sync: false # Set this to your backend's .onrender.com URL
+      - key: FRONTEND_URL
+        sync: false # Set this to your frontend's .onrender.com URL
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: BREVO_API_KEY
+        sync: false
+
+  # Frontend Static Site
+  - type: static
+    name: quiz-site-frontend
+    env: static
+    plan: free
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    publishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false # Set this to your backend's .onrender.com URL

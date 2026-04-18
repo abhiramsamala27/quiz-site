@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const adminRoutes = require('./routes/admin');
 const quizRoutes = require('./routes/quiz');
+const keepAlive = require('./utils/keepAlive');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -30,4 +31,12 @@ mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ MongoDB Connected'))
   .catch(err => console.error('❌ MongoDB Connection Error:', err.message));
 
-app.listen(PORT, '0.0.0.0', () => console.log(`🚀 Server running on port ${PORT}`));
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+  
+  // Keep alive logic for Render/Railway
+  const BACKEND_URL = process.env.BACKEND_URL;
+  if (BACKEND_URL) {
+    keepAlive(BACKEND_URL);
+  }
+});
