@@ -19,6 +19,11 @@ app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use('/api/admin', adminRoutes);
 app.use('/api/quiz', quizRoutes);
 
+// Ping endpoint for UptimeRobot
+app.get('/ping', (req, res) => {
+  res.status(200).send('pong');
+});
+
 // Health Check
 app.get('/', (req, res) => {
   res.send('Quiz App API is running...');
